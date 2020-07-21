@@ -25,8 +25,21 @@ class App extends React.Component<AppProps, AppState> {
 
   render() {
     return (
-      <div className="container-fluid pt-5 mx-auto h-screen bg-blue-100">
+      <div className="container-fluid flex flex-col py-2 mx-auto h-screen bg-blue-100 justify-around">
         <Header headerData={this.state.headerData}  />
+        <div className="flex flex-row w-2/3 mx-auto justify-between">
+          <div className="w-64 h-64 bg-white mx-auto shadow-lg rounded-lg"></div>
+          <div className="w-64 h-64 bg-white mx-auto shadow-lg rounded-lg"></div>
+          <div className="w-64 h-64 bg-white mx-auto shadow-lg rounded-lg"></div>
+          <div className="w-64 h-64 bg-white mx-auto shadow-lg rounded-lg"></div>
+        </div>
+        <div className="flex flex-row w-2/3 mx-auto py-5 bg-white rounded-lg shadow-lg items-center justify-around">
+          <div className="w-40 h-40 shadow-md rounded-lg"></div>
+          <div className="w-40 h-40 shadow-md rounded-lg"></div>
+          <div className="w-40 h-40 shadow-md rounded-lg"></div>
+          <div className="w-40 h-40 shadow-md rounded-lg"></div>
+          <div className="w-40 h-40 shadow-md rounded-lg"></div>
+        </div>
       </div>
       );
   }

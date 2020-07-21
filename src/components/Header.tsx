@@ -7,7 +7,7 @@ interface props {
 
 function Header({ headerData }: props) {
     return (
-        <div className="w-2/3 flex flex-row mx-auto bg-white py-2 px-12 shadow-lg rounded-lg">
+        <div className="w-2/3 flex flex-row mx-auto bg-white py-2 px-12 shadow-xl rounded-lg">
             <div className="flex flex-row w-7/12 mx-auto justify-start items-center">
                 <div>
                     <div className="font-light text-3xl text-left text-blue-300">

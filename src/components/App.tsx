@@ -27,10 +27,10 @@ class App extends React.Component<AppProps, AppState> {
 
   render() {
     return (
-      <div className="container-fluid flex flex-col py-2 mx-auto h-screen bg-blue-100 justify-around">
-        <Header headerData={this.state.headerData}  />
-        <ThermPanel />
-        <WeatherForecast />
+      <div className="flex flex-col py-2 h-screen bg-blue-100 justify-around">
+          <Header headerData={this.state.headerData}  />
+          <ThermPanel />
+          <WeatherForecast />
       </div>
       );
   }

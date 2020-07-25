@@ -6,10 +6,10 @@ const state = {
              '6:00', '8:00', '10:00', '12:00'],
     datasets: [
       {
-        fill: true,
+        fill: false,
         lineTension: 0.5,
         backgroundColor: 'rgba(75,192,192,1)',
-        borderColor: 'rgba(0,0,0,1)',
+        borderColor: '#79E3CF',
         borderWidth: 1,
         data: [65, 59, 80, 81, 56, 61, 64],
       }
@@ -19,10 +19,10 @@ const state = {
 function ThermPanelChild() {
     return (
         <div className="bg-white mx-auto shadow-lg rounded-lg flex flex-col justify-around px-1 py-2">
-            <div className="bg-blue-500 rounded-lg text-white text-center text-lg py-1 font-light">
+            <div className="rounded-lg text-blue-500 text-center text-lg py-1 font-thin">
                 Offline Outside
             </div>
-            <div className="flex flex-row h-16 justify-between items-center content-center border-solid border-2 border-gray-200 my-2 rounded-lg">
+            <div className="flex flex-row h-16 justify-between items-center content-center my-2 rounded-lg">
                 <div className="text-5xl font-thin text-gray-600 ml-2">
                     {`69\u00b0`}
                 </div>

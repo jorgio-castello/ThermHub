@@ -28,7 +28,7 @@ function ThermPanelChild() {
                 </div>
                 <div className="bg-teal-600 text-white font-light text-lg text-center rounded-lg content-center py-1 px-4 mr-2">On</div>
             </div>
-            <div className="w-full h-48 mx-auto">
+            <div className="w-full mx-auto">
                 <Line
                     data={state}
                     options={{

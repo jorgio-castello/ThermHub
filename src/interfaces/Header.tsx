@@ -1,6 +1,7 @@
 export default interface Header {
     city: string,
     state: string,
-    time: Date,
+    date: Date,
+    time: string,
     temperature: number,
 }

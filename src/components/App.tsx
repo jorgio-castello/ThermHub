@@ -14,14 +14,44 @@ class App extends React.Component<AppProps, AppState> {
     super (props);
     
     this.state = {
-      headerData: {city: '', state: '', time: new Date(), temperature: 0},
+      headerData: {city: '', state: '', date: new Date(), temperature: 0, time: ''},
     }
   }
 
   componentDidMount(): void {
-    // We can include a fetch request here: to grab data - for now, utilizing default values
+    fetch('http://localhost:3000/now')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        const [currentWeatherData] = data.thermostats.filter((therm:any) => therm.name === 'weather.gov');
+        
+        this.setState({
+          headerData: { city: 'Madison', state: 'Wisconsin', date: new Date(), temperature: currentWeatherData?.temperature ?? 0, time: this.state.headerData.time },
+        }, () => {
+          this.calculateTime();
+
+          setTimeout(() => {
+            this.calculateTime.call(this);
+            setInterval(this.calculateTime.bind(this), 60000);
+          }, 60000 - this.state.headerData.date.getSeconds() * 1000);
+        });
+      });
+  }
+
+  calculateTime(): void {
+    const time = new Date();
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const amPM = hours >= 12;
+
+    const cleanUpHours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours < 10 ? '0' + hours : hours;
+    const cleanUpMinutes = minutes < 10 ? '0' + minutes : minutes;
+
     this.setState({
-      headerData: { city: 'Madison', state: 'Wisconsin', time: new Date(), temperature: 72 },
+      headerData: {
+        ...this.state.headerData,
+        time: `${cleanUpHours}:${cleanUpMinutes} ${amPM ? 'PM' : 'AM'}`,
+      }
     });
   }
 

@@ -1,12 +1,16 @@
 import React from 'react';
 import Header from './Header';
 import HeaderState from '../interfaces/Header';
+import ThermostatState from '../interfaces/Therm';
+import ForecastState from '../interfaces/Forecast';
 import ThermPanel from './ThermPanel';
 import WeatherForecast from './WeatherForecast';
 
 interface AppProps {}
 interface AppState {
   headerData: HeaderState;
+  thermostatData: ThermostatState[],
+  forecastData: ForecastState[],
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -15,6 +19,8 @@ class App extends React.Component<AppProps, AppState> {
     
     this.state = {
       headerData: {city: '', state: '', date: new Date(), temperature: 0, time: ''},
+      thermostatData: [{id: 0, name: '', temperature: 0, is_hygrostat: false, time: ''}],
+      forecastData: [{date: '', condition: '', day_temp: 0, night_temp: 0}],
     }
   }
 
@@ -27,6 +33,8 @@ class App extends React.Component<AppProps, AppState> {
         
         this.setState({
           headerData: { city: 'Madison', state: 'Wisconsin', date: new Date(), temperature: currentWeatherData?.temperature ?? 0, time: this.state.headerData.time },
+          thermostatData: data.thermostats,
+          forecastData: data.forecast,
         }, () => {
           this.calculateTime();
 
@@ -39,7 +47,9 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   calculateTime(): void {
-    const time = new Date();
+    const test = new Date().toLocaleString("en-US", {timeZone: "America/Menominee"});
+    const time = new Date(test);
+    console.log(test);
     const hours = time.getHours();
     const minutes = time.getMinutes();
     const amPM = hours >= 12;
@@ -59,8 +69,8 @@ class App extends React.Component<AppProps, AppState> {
     return (
       <div className="flex flex-col py-2 h-screen bg-blue-100 justify-around">
           <Header headerData={this.state.headerData}  />
-          <ThermPanel />
-          <WeatherForecast />
+          <ThermPanel thermostatData={this.state.thermostatData}/>
+          <WeatherForecast forecastData={this.state.forecastData} />
       </div>
       );
   }

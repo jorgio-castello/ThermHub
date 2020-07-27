@@ -1,5 +1,10 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
+import Therma from '../interfaces/Therm';
+
+interface ThermChildProps {
+    thermostat: Therma,
+}
 
 const state = {
     labels: ['12:00', '2:00', '4:00',
@@ -16,15 +21,15 @@ const state = {
     ]
   }
 
-function ThermPanelChild() {
+function ThermPanelChild(props:ThermChildProps) {
     return (
         <div className="bg-white mx-auto shadow-lg rounded-lg flex flex-col justify-around px-1 py-2">
             <div className="rounded-lg text-blue-500 text-center text-lg py-1 font-thin">
-                Offline Outside
+                {props.thermostat.name}
             </div>
             <div className="flex flex-row h-16 justify-between items-center content-center my-2 rounded-lg">
                 <div className="text-5xl font-thin text-gray-600 ml-2">
-                    {`69\u00b0`}
+                    {`${props.thermostat.temperature}\u00b0`}
                 </div>
                 <div className="bg-teal-600 text-white font-light text-lg text-center rounded-lg content-center py-1 px-4 mr-2">On</div>
             </div>

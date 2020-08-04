@@ -1,76 +1,41 @@
 import React from 'react';
+import CONFIG from '../config';
+import {AppState, init} from '../interfaces/App';
+import {generateHeader} from '../interfaces/Header';
+import trackTime from '../helpers/trackTime'
+import Therm from '../interfaces/Therm';
 import Header from './Header';
-import HeaderState from '../interfaces/Header';
-import ThermostatState from '../interfaces/Therm';
-import ForecastState from '../interfaces/Forecast';
 import ThermPanel from './ThermPanel';
 import WeatherForecast from './WeatherForecast';
 
-interface AppProps {}
-interface AppState {
-  headerData: HeaderState;
-  thermostatData: ThermostatState[],
-  forecastData: ForecastState[],
-}
-
-class App extends React.Component<AppProps, AppState> {
-  constructor(props:AppProps) {
+class App extends React.Component<{}, AppState> {
+  constructor(props:{}) {
     super (props);
-    
-    this.state = {
-      headerData: {city: '', state: '', date: new Date(), temperature: 0, time: ''},
-      thermostatData: [{id: 0, name: '', temperature: 0, is_hygrostat: false, time: ''}],
-      forecastData: [{date: '', condition: '', day_temp: 0, night_temp: 0}],
-    }
+    this.state = init();
   }
 
   componentDidMount(): void {
-    fetch('http://localhost:3000/now')
+    fetch(`${CONFIG.host}:${CONFIG.port}/now`)
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        const [currentWeatherData] = data.thermostats.filter((therm:any) => therm.name === 'weather.gov');
+        const { forecast, thermostats } = data;
+        const [currentWeatherData] = thermostats.filter((therm:Therm) => therm.name === 'weather.gov');
         
         this.setState({
-          headerData: { city: 'Madison', state: 'Wisconsin', date: new Date(), temperature: currentWeatherData?.temperature ?? 0, time: this.state.headerData.time },
-          thermostatData: data.thermostats,
-          forecastData: data.forecast,
-        }, () => {
-          this.calculateTime();
-
-          setTimeout(() => {
-            this.calculateTime.call(this);
-            setInterval(this.calculateTime.bind(this), 60000);
-          }, 60000 - this.state.headerData.date.getSeconds() * 1000);
-        });
+          header: generateHeader(CONFIG.city, CONFIG.state, currentWeatherData?.temperature),
+          thermostats,
+          forecast,
+        }, () => trackTime.call(this));  
       });
-  }
-
-  calculateTime(): void {
-    const test = new Date().toLocaleString("en-US", {timeZone: "America/Menominee"});
-    const time = new Date(test);
-    console.log(test);
-    const hours = time.getHours();
-    const minutes = time.getMinutes();
-    const amPM = hours >= 12;
-
-    const cleanUpHours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours < 10 ? '0' + hours : hours;
-    const cleanUpMinutes = minutes < 10 ? '0' + minutes : minutes;
-
-    this.setState({
-      headerData: {
-        ...this.state.headerData,
-        time: `${cleanUpHours}:${cleanUpMinutes} ${amPM ? 'PM' : 'AM'}`,
-      }
-    });
   }
 
   render() {
     return (
       <div className="flex flex-col py-2 h-screen bg-blue-100 justify-around">
-          <Header headerData={this.state.headerData}  />
-          <ThermPanel thermostatData={this.state.thermostatData}/>
-          <WeatherForecast forecastData={this.state.forecastData} />
+          <Header headerData={this.state.header}  />
+          <ThermPanel thermostatData={this.state.thermostats}/>
+          <WeatherForecast forecastData={this.state.forecast} />
       </div>
       );
   }

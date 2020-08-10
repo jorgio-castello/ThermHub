@@ -64,7 +64,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   render() {
-    let {header, date} = this.state;
+    const {header, date} = this.state;
     return (
       <>
         <div className="flex p-10 pt-5 bg-indigo-200 bg-opacity-75 h-screen justify-around">

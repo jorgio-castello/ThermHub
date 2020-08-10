@@ -15,7 +15,7 @@ function Header({headerData, date, use24Hour}: props) {
     const temperature = scrubTemperature(headerData.temperature);
     const time = use24Hour
         ? `${date.getHours()}`.padStart(2, '0') + ':' + `${date.getMinutes()}`.padStart(2, '0')
-        : `${date.getHours()}:` + `${date.getMinutes()}`.padStart(2, '0');
+        : `${((date.getHours() + 11) % 12) + 1}:` + `${date.getMinutes()}`.padStart(2, '0');
     
     return (
         <div className="flex flex-row bg-white py-2 px-12 shadow-xl rounded-lg">

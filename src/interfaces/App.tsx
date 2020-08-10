@@ -3,6 +3,7 @@ import ThermostatState from '../interfaces/Therm';
 import ForecastState from '../interfaces/Forecast';
 
 export interface AppState {
+    date: Date;
     header: HeaderState;
     thermostats: ThermostatState[],
     forecast: ForecastState[],
@@ -12,7 +13,8 @@ export interface AppState {
 
 export function init(): AppState {
     return {
-        header: {city: '', state: '', date: new Date(), temperature: 0, time: ''},
+        date: new Date(),
+        header: {city: '', state: '', temperature: 0},
         thermostats: [{id: 0, name: '', temperature: 0, is_hygrostat: false, time: ''}],
         forecast: [{date: '', condition: '', day_temp: 0, night_temp: 0}],
         showThermModal: false,

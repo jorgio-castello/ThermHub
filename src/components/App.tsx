@@ -2,7 +2,7 @@ import React from 'react';
 import CONFIG from '../config';
 import {AppState, init} from '../interfaces/App';
 import {generateHeader} from '../interfaces/Header';
-import trackTime from '../helpers/trackTime'
+import {getDate} from '../helpers/trackTime'
 import Therm from '../interfaces/Therm';
 import Header from './Header';
 import ThermPanel from './ThermPanel';
@@ -10,6 +10,8 @@ import WeatherForecast from './WeatherForecast';
 import ThermModal from './ThermModal';
 
 class App extends React.Component<{}, AppState> {
+  private timeThread = 0;
+
   constructor(props:{}) {
     super (props);
     this.state = init();
@@ -19,6 +21,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   componentDidMount(): void {
+    this.startTimeThread();
     fetch(`${CONFIG.host}/now`)
       .then(res => res.json())
       .then(data => {
@@ -29,8 +32,24 @@ class App extends React.Component<{}, AppState> {
           header: generateHeader(CONFIG.city, CONFIG.state, currentWeatherData?.temperature),
           thermostats,
           forecast,
-        }, () => trackTime.call(this));  
+        });
       });
+  }
+
+  componentWillUnmount(): void {
+    if (this.timeThread) {
+      clearInterval(this.timeThread);
+      this.timeThread = 0;
+    }
+  }
+
+  private startTimeThread(): void {
+    this.timeThread = window.setInterval(() => {
+      const date = getDate();
+      if (date !== undefined) {
+        this.setState({date})
+      }
+    }, 2000);
   }
 
   expandThermPanel(e:Event): void {
@@ -45,6 +64,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   render() {
+    let {header, date} = this.state;
     return (
       <>
         <div className="flex p-10 pt-5 bg-indigo-200 bg-opacity-75 h-screen justify-around">
@@ -67,7 +87,7 @@ class App extends React.Component<{}, AppState> {
             </div>
             <div className="inline-flex flex-col justify-center w-3/4">
                 <div className="inline-flex flex-col">
-                      <Header headerData={this.state.header}  />
+                      <Header headerData={header} date={date} use24Hour={true} />
                       <ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} />
                       <WeatherForecast forecastData={this.state.forecast} />
                 </div>

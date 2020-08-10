@@ -19,7 +19,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   componentDidMount(): void {
-    fetch(`${CONFIG.host}:${CONFIG.port}/now`)
+    fetch(`${CONFIG.host}/now`)
       .then(res => res.json())
       .then(data => {
         const {forecast, thermostats} = data;
@@ -47,10 +47,10 @@ class App extends React.Component<{}, AppState> {
   render() {
     return (
       <>
-        <div className="flex p-10 pt-5 bg-indigo-200 bg-opacity-50 h-screen justify-around">
+        <div className="flex p-10 pt-5 bg-indigo-200 bg-opacity-75 h-screen justify-around">
             <div className="inline-flex w-2/12 flex-col justify-center">
-              <div className="text-left text-5xl font-hairline text-blue-600">{`Therm\u00b0`}</div>
-              <div className="py-5 bg-blue-100 bg-opacity-25 shadow-lg rounded-lg border border-solid border-blue-200"> 
+              <div className="text-left text-5xl font-bold text-blue-600 tracking-tight">{`Therm\u00b0`}</div>
+              <div className="py-5 bg-blue-100 bg-opacity-75 shadow-lg rounded-lg border border-solid border-indigo-200"> 
                 <div className="ml-2 mb-2 font-light text-blue-500">Select a Location:</div>
                 <input className="h-10 rounded-lg border border-solid border-gray-300 w-3/4 ml-2 pl-2 font-thin shadow-lg" type="text" placeholder="Enter a city"/>
                 <div className="ml-2 mt-5 mb-2 font-light text-blue-500">Degrees format:</div>
@@ -60,8 +60,8 @@ class App extends React.Component<{}, AppState> {
                 </div>
                 <div className="ml-2 mt-5 mb-2 font-light text-blue-500">Time format:</div>
                 <div className="flex flex-row ml-2">
-                  <button className="bg-teal-400 py-1 px-4 text-white rounded-full mr-2 shadow-lg font-thin">Military</button>
-                  <button className="border border-solid border-teal-300 text-teal-400 bg-white py-1 px-4 rounded-full shadow-lg font-thin">Standard</button>
+                  <button className="border border-solid border-teal-300 text-teal-400 bg-white py-1 px-8 rounded-full shadow-lg font-thin mr-2">12H</button>
+                  <button className="bg-teal-400 py-1 px-8 text-white rounded-full shadow-lg font-thin">24H</button>
                 </div>
               </div>
             </div>

@@ -22,7 +22,7 @@ function ThermPanelChild(props:ThermChildProps) {
     const termperature = scrubTemperature(props.thermostat.temperature);
     
     return (
-        <button id={props.id} type="button" className={`bg-white shadow-lg rounded-lg flex flex-col justify-around px-1 py-2 w-${props.width}`} onClick={(e) => props.updateModalDisplay(e)}>
+        <button id={props.id} type="button" className={`bg-white mr-5 shadow-lg rounded-lg flex flex-col justify-around px-1 py-2 w-${props.width}`} onClick={(e) => props.updateModalDisplay(e)}>
             <div className="px-2 flex flex-row h-24 justify-between items-center content-center my-2 rounded-lg w-full">
                 <div className="flex flex-col items-start">
                     <div className="flex flex-row rounded-lg text-blue-500 text-center text-lg py-1 font-thin items-center">

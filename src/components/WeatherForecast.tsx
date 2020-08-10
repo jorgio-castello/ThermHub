@@ -14,7 +14,7 @@ function WeatherForecast(props: ForecastProps) {
           <div className="flex flex-col">
             <div className="inline-flex w-2/12 pl-1 font-thin text-white bg-indigo-700 text-lg justify-center mb-2 p-2 rounded-lg bg-opacity-75 shadow-lg">Weather Forecast</div>
           </div>
-          <div className="flex flex-row p-5 rounded-lg shadow-lg items-center justify-around bg-teal-400 bg-opacity-50">
+          <div className="flex flex-row p-5 rounded-lg shadow-lg items-center justify-around bg-blue-100 bg-opacity-75 border border-solid border-indigo-200">
             {data.map((forecast, index) => <WeatherForecastTile forecast={forecast} key={index}/>)}
           </div>
         </>

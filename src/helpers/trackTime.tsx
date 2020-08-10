@@ -8,6 +8,7 @@ let offset = 0;
  */
 function getOffset(): void {
   fetch(`${host}/time`)
+    .then(res => res.text())
     .then(text => {
       offset = (new Date()).getTime() - (parseInt(text, 10) * 1000);
     });

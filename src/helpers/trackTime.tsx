@@ -22,6 +22,6 @@ export default function trackTime(this: App): void {
   calculateTime.call(this);
   setTimeout(() => {
     calculateTime.call(this);
-    setInterval(calculateTime.bind(this), 60000);
+    setInterval(calculateTime.bind(this), 1000);
   }, 60000 - this.state.header.date.getSeconds() * 1000);
 }

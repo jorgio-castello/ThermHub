@@ -10,9 +10,14 @@ function WeatherForecast(props: ForecastProps) {
     const data = props.forecastData.sort((a, b) => Number(new Date(a.date)) - Number(new Date(b.date)));
   
     return (
-        <div className="flex flex-row w-10/12 mx-auto py-5 rounded-lg shadow-lg items-center justify-around">
-          {data.map((forecast, index) => <WeatherForecastTile forecast={forecast} key={index}/>)}
-        </div>
+        <>
+          <div className="flex flex-col">
+            <div className="inline-flex w-2/12 pl-1 font-thin text-white bg-indigo-700 text-lg justify-center mb-2 p-2 rounded-lg bg-opacity-75 shadow-lg">Weather Forecast</div>
+          </div>
+          <div className="flex flex-row p-5 rounded-lg shadow-lg items-center justify-around bg-teal-400 bg-opacity-50">
+            {data.map((forecast, index) => <WeatherForecastTile forecast={forecast} key={index}/>)}
+          </div>
+        </>
     );
 }
 

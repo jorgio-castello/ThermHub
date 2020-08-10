@@ -6,6 +6,8 @@ export interface AppState {
     header: HeaderState;
     thermostats: ThermostatState[],
     forecast: ForecastState[],
+    showThermModal: boolean,
+    thermModalIdx: number,
 }
 
 export function init(): AppState {
@@ -13,5 +15,7 @@ export function init(): AppState {
         header: {city: '', state: '', date: new Date(), temperature: 0, time: ''},
         thermostats: [{id: 0, name: '', temperature: 0, is_hygrostat: false, time: ''}],
         forecast: [{date: '', condition: '', day_temp: 0, night_temp: 0}],
+        showThermModal: false,
+        thermModalIdx: -1,
     }
 }

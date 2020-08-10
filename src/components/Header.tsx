@@ -1,19 +1,19 @@
 import React from 'react';
 import HeaderProps from '../interfaces/Header';
+import scrubTemperature from '../helpers/temperatureScrubber';
+import { daysOfWeek, monthsOfYear } from '../interfaces/Calendar';
 
 interface props {
     headerData: HeaderProps,
 }
 
-const daysOfWeek:string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const monthsOfYear:string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
 function Header({ headerData }: props) {
     const dayOfWeek:string = daysOfWeek[headerData.date.getDay() - 1];
     const formattedDateString:string = `${monthsOfYear[headerData.date.getMonth()]} ${headerData.date.getDate()}, ${headerData.date.getFullYear()}`;
+    const temperature = scrubTemperature(headerData.temperature);
     
     return (
-        <div className="w-10/12 flex flex-row mx-auto bg-white py-2 px-12 shadow-xl rounded-lg">
+        <div className="flex flex-row bg-white py-2 px-12 shadow-xl rounded-lg">
             <div className="flex flex-row w-7/12 mx-auto justify-start items-center">
                 <div>
                     <div className="font-light text-3xl text-left text-blue-300">
@@ -26,7 +26,7 @@ function Header({ headerData }: props) {
                     </div>
                 </div>
                 <div className="mr-5">
-                    <div className="font-thin text-6xl text-teal-300">{`${headerData.temperature}\u00b0`}</div>
+                    <div className="font-thin text-6xl text-teal-300">{`${temperature}\u00b0`}</div>
                 </div>
             </div>
 

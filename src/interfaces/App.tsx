@@ -16,7 +16,7 @@ export function init(): AppState {
     return {
         date: new Date(),
         header: {city: '', state: '', temperature: 0},
-        thermostats: [{id: 0, name: '', temperature: 0, is_hygrostat: false, time: ''}],
+        thermostats: [{id: 0, name: '', temperature: 0, is_hygrostat: false, time: '', relative_humidity: 0}],
         past: [],
         forecast: [{date: '', condition: '', day_temp: 0, night_temp: 0}],
         showThermModal: false,

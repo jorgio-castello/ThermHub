@@ -29,7 +29,7 @@ export default function ThermModal(props: ThermModalProps) {
                 </div>
                 <button className="bg-red-600 bg-opacity-75 p-3 mt-20 text-xl rounded-lg text-white font-thin " onClick={() => props.updateModalDisplay()}>Close</button>
             </div>      
-                <ThermPanelChild thermostat={props.therma} updateModalDisplay={() => {}} width="1/2"/>
+                <ThermPanelChild thermostat={props.therma} past={[]} updateModalDisplay={() => {}} width="1/2"/>
             </div>
         </div>
     );

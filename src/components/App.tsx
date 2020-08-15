@@ -3,11 +3,12 @@ import CONFIG from '../config';
 import {AppState, init} from '../interfaces/App';
 import {generateHeader} from '../interfaces/Header';
 import {getDate} from '../helpers/trackTime'
-import Therm from '../interfaces/Therm';
 import Header from './Header';
 import ThermPanel from './ThermPanel';
 import WeatherForecast from './WeatherForecast';
 import ThermModal from './ThermModal';
+import { NowResponse } from '../interfaces/NowResponse';
+import Therma from '../interfaces/Therm';
 
 class App extends React.Component<{}, AppState> {
   private timeThread = 0;
@@ -22,18 +23,6 @@ class App extends React.Component<{}, AppState> {
 
   componentDidMount(): void {
     this.startTimeThread();
-    fetch(`${CONFIG.host}/now`)
-      .then(res => res.json())
-      .then(data => {
-        const {forecast, thermostats} = data;
-        const [currentWeatherData] = thermostats.filter((therm:Therm) => therm.name === 'weather.gov');
-        
-        this.setState({
-          header: generateHeader(CONFIG.city, CONFIG.state, currentWeatherData?.temperature),
-          thermostats,
-          forecast,
-        });
-      });
   }
 
   componentWillUnmount(): void {
@@ -47,11 +36,36 @@ class App extends React.Component<{}, AppState> {
     this.timeThread = window.setInterval(() => {
       const date = getDate();
       if (date !== undefined) {
-        this.setState({date})
+        this.setState({date});
+        this.updateData(date);
       }
     }, 2000);
   }
 
+  private updateData(now: Date): void {
+    this.fetchNow()
+      .then(data => {
+        const {forecast, thermostats} = data;
+        const currentWeatherData = thermostats.find(therm => therm.name === 'weather.gov');
+        
+        this.setState({
+          header: generateHeader(CONFIG.city, CONFIG.state, currentWeatherData?.temperature),
+          thermostats,
+          forecast,
+        });
+      });
+    this.fetchPast(new Date(now.getTime() - 43200000), now)
+      .then(past => {
+        this.setState({past});
+      });
+  }
+
+  private fetchNow = (): Promise<NowResponse> => 
+    fetch(`${CONFIG.host}/now`).then(res => res.json());
+  
+  private fetchPast = (after: Date, before: Date): Promise<Therma[]> =>
+    fetch(`${CONFIG.host}/past?start_date=${after.toISOString()}&end_date=${before.toISOString()}`).then(res => res.json());
+  
   expandThermPanel(e:Event): void {
     const target = e.currentTarget as HTMLInputElement;
     const index = Number(target.getAttribute('id'));
@@ -88,7 +102,7 @@ class App extends React.Component<{}, AppState> {
             <div className="inline-flex flex-col justify-center w-3/4">
                 <div className="inline-flex flex-col">
                       <Header headerData={header} date={date} use24Hour={true} />
-                      <ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} />
+                      <ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} pastData={this.state.past} />
                       <WeatherForecast forecastData={this.state.forecast} />
                 </div>
             </div>

@@ -20,6 +20,16 @@ const state = {
 
 function ThermPanelChild(props:ThermChildProps) {
     const termperature = scrubTemperature(props.thermostat.temperature);
+    const data = {
+        labels: ['12:00', '2:00', '4:00', '6:00', '8:00', '10:00', '12:00'], // TODO
+        datasets: [{
+            fill: false,
+            lineTension: 0.5,
+            backgroundColor: 'rgba(75,192,192,1)',
+            borderColor: '#79E3CF',
+            data: props.past.map(therm => therm.temperature),
+        }],
+    }
     
     return (
         <button id={props.id} type="button" className={`bg-white mr-5 shadow-lg rounded-lg flex flex-col justify-around px-1 py-2 w-${props.width}`} onClick={(e) => props.updateModalDisplay(e)}>
@@ -37,7 +47,7 @@ function ThermPanelChild(props:ThermChildProps) {
             </div>
             <div className="w-full mx-auto">
                 <Line
-                    data={state}
+                    data={data}
                     options={{
                         title: { 
                         display:false,

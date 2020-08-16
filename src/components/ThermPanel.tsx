@@ -5,6 +5,8 @@ import Therma from '../interfaces/Therm';
 interface ThermaProps {
     thermostatData: Therma[],
     expandThermPanel: Function,
+    degreesFormat: string,
+    use24Hour: boolean,
 }
 
 function ThermPanel(props: ThermaProps) {
@@ -16,7 +18,7 @@ function ThermPanel(props: ThermaProps) {
             </div>
             </div>
             <div className="flex flex-row p-5 rounded-lg shadow-lg bg-blue-100 bg-opacity-75 mb-10 justify-start border border-solid border-indigo-200">
-                { props.thermostatData.map((thermostat, index) => <ThermPanelChild thermostat={thermostat} width="1/4" key={index} id={index} updateModalDisplay={props.expandThermPanel} />) }
+                { props.thermostatData.map((thermostat, index) => <ThermPanelChild thermostat={thermostat} width="1/4" key={index} id={index} updateModalDisplay={props.expandThermPanel} degreesFormat={props.degreesFormat} use24Hour={props.use24Hour}/>) }
             </div>
         </>
     );

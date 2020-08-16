@@ -2,14 +2,17 @@ import React from 'react';
 import CONFIG from '../config';
 import {AppState, init} from '../interfaces/App';
 import {generateHeader} from '../interfaces/Header';
-import trackTime from '../helpers/trackTime'
+import {getDate} from '../helpers/trackTime'
 import Therm from '../interfaces/Therm';
 import Header from './Header';
 import ThermPanel from './ThermPanel';
 import WeatherForecast from './WeatherForecast';
 import ThermModal from './ThermModal';
+import { activeBtnState, inactiveBtnState } from '../assets/cssClasses';
 
 class App extends React.Component<{}, AppState> {
+  private timeThread = 0;
+  
   constructor(props:{}) {
     super (props);
     this.state = init();
@@ -19,9 +22,11 @@ class App extends React.Component<{}, AppState> {
   }
 
   componentDidMount(): void {
+    this.startTimeThread();
     fetch(`${CONFIG.host}/now`)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         const {forecast, thermostats} = data;
         const [currentWeatherData] = thermostats.filter((therm:Therm) => therm.name === 'weather.gov');
         
@@ -29,8 +34,24 @@ class App extends React.Component<{}, AppState> {
           header: generateHeader(CONFIG.city, CONFIG.state, currentWeatherData?.temperature),
           thermostats,
           forecast,
-        }, () => trackTime.call(this));  
+        });  
       });
+  }
+
+  componentWillUnmount(): void {
+    if (this.timeThread) {
+      clearInterval(this.timeThread);
+      this.timeThread = 0;
+    }
+  }
+
+  private startTimeThread(): void {
+    this.timeThread = window.setInterval(() => {
+      const date = getDate();
+      if (date !== undefined) {
+        this.setState({date});
+      }
+    });
   }
 
   expandThermPanel(e:Event): void {
@@ -45,6 +66,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   render() {
+    const {header, date, use24Hour, degreesFormat} = this.state;
     return (
       <>
         <div className="flex p-10 pt-5 bg-indigo-200 bg-opacity-75 h-screen justify-around">
@@ -53,27 +75,28 @@ class App extends React.Component<{}, AppState> {
               <div className="py-5 bg-blue-100 bg-opacity-75 shadow-lg rounded-lg border border-solid border-indigo-200"> 
                 <div className="ml-2 mb-2 font-light text-blue-500">Select a Location:</div>
                 <input className="h-10 rounded-lg border border-solid border-gray-300 w-3/4 ml-2 pl-2 font-thin shadow-lg" type="text" placeholder="Enter a city"/>
-                <div className="ml-2 mt-5 mb-2 font-light text-blue-500">Degrees format:</div>
-                <div className="flex flex-row ml-2">
-                  <button className="bg-teal-400 py-1 px-4 text-white rounded-full mr-2 shadow-lg font-thin">{`Fahrenheit (F${`\u00b0`})`}</button>
-                  <button className="border border-solid border-teal-300 bg-white text-teal-400 py-1 px-4 rounded-full shadow-lg font-thin">{`Celsius (C${`\u00b0`})`}</button>
+                <div className="ml-2 mt-5 mb-2 font-light text-blue-500">Temperature format:</div>
+                <div className="flex flex-row ml-2 flex-wrap">
+                  <button className={degreesFormat === 'Fahrenheit' ? activeBtnState : inactiveBtnState} onClick={() => this.setState({degreesFormat: 'Fahrenheit'})}>Fahrenheit</button>
+                  <button className={degreesFormat === 'Celsius' ? activeBtnState : inactiveBtnState} onClick={() => this.setState({degreesFormat: 'Celsius'})}>Celsius</button>
+                  <button className={degreesFormat === 'Kelvin' ? activeBtnState : inactiveBtnState} onClick={() => this.setState({degreesFormat: 'Kelvin'})}>Kelvin</button>
                 </div>
                 <div className="ml-2 mt-5 mb-2 font-light text-blue-500">Time format:</div>
                 <div className="flex flex-row ml-2">
-                  <button className="border border-solid border-teal-300 text-teal-400 bg-white py-1 px-8 rounded-full shadow-lg font-thin mr-2">12H</button>
-                  <button className="bg-teal-400 py-1 px-8 text-white rounded-full shadow-lg font-thin">24H</button>
+                  <button className={use24Hour ? inactiveBtnState : activeBtnState} onClick = {() => this.setState({use24Hour:false})}>12H</button>
+                  <button className={use24Hour ? activeBtnState : inactiveBtnState} onClick = {() => this.setState({use24Hour:true})}>24H</button>
                 </div>
               </div>
             </div>
             <div className="inline-flex flex-col justify-center w-3/4">
                 <div className="inline-flex flex-col">
-                      <Header headerData={this.state.header}  />
-                      <ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} />
-                      <WeatherForecast forecastData={this.state.forecast} />
+                      <Header headerData={header} date={date} use24Hour={use24Hour} degreesFormat={degreesFormat}/>
+                      <ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} degreesFormat={degreesFormat} use24Hour={use24Hour} />
+                      <WeatherForecast forecastData={this.state.forecast} degreesFormat={degreesFormat} />
                 </div>
             </div>
         </div>
-        {this.state.showThermModal ? <ThermModal therma={this.state.thermostats[this.state.thermModalIdx]} updateModalDisplay={this.closeModal} /> : <div />}
+        {this.state.showThermModal ? <ThermModal therma={this.state.thermostats[this.state.thermModalIdx]} updateModalDisplay={this.closeModal} degreesFormat={degreesFormat} use24Hour={use24Hour} /> : <div />}
       </>
       );
   }

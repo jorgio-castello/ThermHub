@@ -5,6 +5,8 @@ import Therma from '../interfaces/Therm';
 interface ThermModalProps {
     therma: Therma,
     updateModalDisplay: Function,
+    degreesFormat: string,
+    use24Hour: boolean,
 }
 
 interface timelineProps {
@@ -29,7 +31,7 @@ export default function ThermModal(props: ThermModalProps) {
                 </div>
                 <button className="bg-red-600 bg-opacity-75 p-3 mt-20 text-xl rounded-lg text-white font-thin " onClick={() => props.updateModalDisplay()}>Close</button>
             </div>      
-                <ThermPanelChild thermostat={props.therma} updateModalDisplay={() => {}} width="1/2"/>
+                <ThermPanelChild thermostat={props.therma} updateModalDisplay={() => {}} width="1/2" degreesFormat={props.degreesFormat} use24Hour={props.use24Hour} />
             </div>
         </div>
     );

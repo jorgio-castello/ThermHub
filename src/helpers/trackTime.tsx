@@ -1,27 +1,32 @@
-import App from "../components/App";
+import {host, timeZone} from '../config';
 
-function calculateTime(this: App): void {
-    const wisconsinDateStr:string = new Date().toLocaleString("en-US", {timeZone: "America/Menominee"});
-    const wisconsinTime:Date = new Date(wisconsinDateStr);
-    
-    let hours:string|number = wisconsinTime.getHours();
-    let minutes:string|number = wisconsinTime.getMinutes();
+let lastTimestamp: Date|undefined;
+let offset = 0;
 
-    hours = hours < 10 ? `0${hours}` : hours;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-
-    this.setState({
-      header: {
-        ...this.state.header,
-        time: `${hours}:${minutes}`,
-      }
+function getOffset(): void {
+  fetch(`${host}/time`)
+    .then(res => res.text())
+    .then(text => {
+      offset = (new Date()).getTime() - (parseInt(text, 10) * 1000);
     });
-};
 
-export default function trackTime(this: App): void {
-  calculateTime.call(this);
-  setTimeout(() => {
-    calculateTime.call(this);
-    setInterval(calculateTime.bind(this), 1000);
-  }, 60000 - this.state.header.date.getSeconds() * 1000);
+}
+
+export function getDate(): Date|undefined {
+  let now: Date;
+  now = new Date((new Date()).getTime() + offset);
+  now = new Date(now.toLocaleString('en-US', {timeZone}));
+
+  if (lastTimestamp === undefined) {
+    getOffset();
+    lastTimestamp = now;
+    return now;
+  }
+
+  else if (lastTimestamp.getMinutes() !== now.getMinutes()) {
+    lastTimestamp = now;
+    return now;
+  }
+
+  return undefined;
 }

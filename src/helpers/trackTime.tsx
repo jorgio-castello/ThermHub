@@ -9,7 +9,6 @@ function getOffset(): void {
     .then(text => {
       offset = (new Date()).getTime() - (parseInt(text, 10) * 1000);
     });
-
 }
 
 export function getDate(): Date|undefined {

@@ -4,7 +4,7 @@ export default interface Header {
     temperature: number,
 }
 
-export function generateHeader(city:string, state:string, temperature?: number, ):Header {
+export function generateHeader(city:string, state:string, temperature?: number):Header {
     return {
         city,
         state,

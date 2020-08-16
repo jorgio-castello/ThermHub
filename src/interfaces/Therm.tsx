@@ -4,4 +4,5 @@ export default interface Therma {
     temperature: number,
     time: string,
     is_hygrostat: boolean,
+    relative_humidity: number,
 }

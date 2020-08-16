@@ -5,12 +5,17 @@ import { daysOfWeek, monthsOfYear } from '../interfaces/Calendar';
 
 interface props {
     headerData: HeaderProps,
+    date: Date,
+    use24Hour: boolean,
 }
 
-function Header({ headerData }: props) {
-    const dayOfWeek:string = daysOfWeek[headerData.date.getDay() - 1];
-    const formattedDateString:string = `${monthsOfYear[headerData.date.getMonth()]} ${headerData.date.getDate()}, ${headerData.date.getFullYear()}`;
+function Header({headerData, date, use24Hour}: props) {
+    const dayOfWeek:string = daysOfWeek[date.getDay() - 1];
+    const formattedDateString:string = `${monthsOfYear[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
     const temperature = scrubTemperature(headerData.temperature);
+    const time = use24Hour
+        ? `${date.getHours()}`.padStart(2, '0') + ':' + `${date.getMinutes()}`.padStart(2, '0')
+        : `${((date.getHours() + 11) % 12) + 1}:` + `${date.getMinutes()}`.padStart(2, '0');
     
     return (
         <div className="flex flex-row bg-white py-2 px-12 shadow-xl rounded-lg">
@@ -31,7 +36,7 @@ function Header({ headerData }: props) {
             </div>
 
             <div className="w-5/12 flex flex-col text-right">
-                <div className="font-thin text-5xl mb-2 text-teal-300">{headerData.time}</div>
+                <div className="font-thin text-5xl mb-2 text-teal-300">{time}</div>
                 <div className="font-thin text-2xl text-gray-500">{dayOfWeek}</div>
                 <div className="font-thin text-2xl text-gray-500">{formattedDateString}</div>
             </div>

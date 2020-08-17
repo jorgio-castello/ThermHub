@@ -1,4 +1,4 @@
-export default interface Header {
+export type  Header = {
     city: string,
     state: string,
     temperature: number,

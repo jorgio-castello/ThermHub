@@ -1,4 +1,4 @@
-export default interface Forecast {
+export type Forecast = {
     date: string,
     condition: string,
     day_temp: number,

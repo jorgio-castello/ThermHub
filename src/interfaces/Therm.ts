@@ -1,4 +1,4 @@
-export default interface Therma {
+export type Therm = {
     id: number,
     name: string,
     temperature: number,

@@ -1,15 +1,10 @@
 import React from 'react';
 import CONFIG from '../config';
-import {AppState, init} from '../interfaces/App';
-import {generateHeader} from '../interfaces/Header';
-import {getDate} from '../helpers/trackTime'
-import Header from './Header';
-import ThermPanel from './ThermPanel';
-import WeatherForecast from './WeatherForecast';
-import ThermModal from './ThermModal';
-import { activeBtnState, inactiveBtnState } from '../assets/cssClasses';
-import { NowResponse } from '../interfaces/NowResponse';
-import Therma from '../interfaces/Therm';
+import {ControlPanel, Header, RaspberrySettings, ThermModal, ThermPanel, WeatherForecast} from './';
+import {AppState, init, DegreesFormat, generateHeader, NowResponse, Therm, TimeFormat} from '../interfaces';
+import {getDate, getNow} from '../helpers'
+import {closeModal, expandThermPanel, setTemperatureFormat, setTimeFormat, toggleRaspberrySettings} from '../eventHandlers';
+import {AppContainer} from '../assets/cssClasses';
 
 class App extends React.Component<{}, AppState> {
   private timeThread = 0;
@@ -18,12 +13,19 @@ class App extends React.Component<{}, AppState> {
     super (props);
     this.state = init();
 
-    this.expandThermPanel = this.expandThermPanel.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.closeModal = closeModal.bind(this);
+    this.expandThermPanel = expandThermPanel.bind(this);
+    this.setTemperatureFormat = setTemperatureFormat.bind(this);
+    this.setTimeFormat = setTimeFormat.bind(this);
+    this.toggleRaspberrySettings = toggleRaspberrySettings.bind(this);
   }
 
   componentDidMount(): void {
-    this.startTimeThread();
+    const startTime = getNow();
+    this.updateData(startTime)
+      .then(() => {
+        this.startTimeThread();
+      });
   }
 
   componentWillUnmount(): void {
@@ -32,6 +34,12 @@ class App extends React.Component<{}, AppState> {
       this.timeThread = 0;
     }
   }
+
+  closeModal(): void {};
+  expandThermPanel(e: Event): void {};
+  toggleRaspberrySettings(): void {};
+  setTimeFormat(use24Hour: TimeFormat): void {};
+  setTemperatureFormat(degreesFormat: DegreesFormat): void {};
 
   private startTimeThread(): void {
     this.timeThread = window.setInterval(() => {
@@ -43,8 +51,8 @@ class App extends React.Component<{}, AppState> {
     }, 2000);
   }
 
-  private updateData(now: Date): void {
-    this.fetchNow()
+  private async updateData(now: Date): Promise<void> {
+    await this.fetchNow()
       .then(data => {
         console.log(data);
         const {forecast, thermostats} = data;
@@ -54,10 +62,12 @@ class App extends React.Component<{}, AppState> {
           header: generateHeader(CONFIG.city, CONFIG.state, currentWeatherData?.temperature),
           thermostats,
           forecast,
+          date: now,
         });
       });
-    this.fetchPast(new Date(now.getTime() - 43200000), now)
+    await this.fetchPast(new Date(now.getTime() - 43200000), now)
       .then(past => {
+        console.log(past);
         this.setState({past});
       });
   }
@@ -65,52 +75,27 @@ class App extends React.Component<{}, AppState> {
   private fetchNow = (): Promise<NowResponse> => 
     fetch(`${CONFIG.host}/now`).then(res => res.json());
   
-  private fetchPast = (after: Date, before: Date): Promise<Therma[]> =>
+  private fetchPast = (after: Date, before: Date): Promise<Therm[]> =>
     fetch(`${CONFIG.host}/past?start_date=${after.toISOString()}&end_date=${before.toISOString()}`).then(res => res.json());
   
-  expandThermPanel(e:Event): void {
-    const target = e.currentTarget as HTMLInputElement;
-    const index = Number(target.getAttribute('id'));
-
-    this.setState({ showThermModal: true, thermModalIdx: index })
-  }
-
-  closeModal(): void {
-    this.setState({ showThermModal: false, thermModalIdx: -1 });
-  }
-
   render() {
-    const {header, date, use24Hour, degreesFormat} = this.state;
+    const {header, date, use24Hour, degreesFormat, showThermModal, showRaspberrySettings} = this.state;
     return (
       <>
-        <div className="flex p-10 pt-5 bg-indigo-200 bg-opacity-75 h-screen justify-around">
-            <div className="inline-flex w-2/12 flex-col justify-center">
-              <div className="text-left text-5xl font-bold text-blue-600 tracking-tight">{`Therm\u00b0`}</div>
-              <div className="py-5 bg-blue-100 bg-opacity-75 shadow-lg rounded-lg border border-solid border-indigo-200"> 
-                <div className="ml-2 mb-2 font-light text-blue-500">Select a Location:</div>
-                <input className="h-10 rounded-lg border border-solid border-gray-300 w-3/4 ml-2 pl-2 font-thin shadow-lg" type="text" placeholder="Enter a city"/>
-                <div className="ml-2 mt-5 mb-2 font-light text-blue-500">Temperature format:</div>
-                <div className="flex flex-row ml-2 flex-wrap">
-                  <button className={degreesFormat === 'Fahrenheit' ? activeBtnState : inactiveBtnState} onClick={() => this.setState({degreesFormat: 'Fahrenheit'})}>Fahrenheit</button>
-                  <button className={degreesFormat === 'Celsius' ? activeBtnState : inactiveBtnState} onClick={() => this.setState({degreesFormat: 'Celsius'})}>Celsius</button>
-                  <button className={degreesFormat === 'Kelvin' ? activeBtnState : inactiveBtnState} onClick={() => this.setState({degreesFormat: 'Kelvin'})}>Kelvin</button>
-                </div>
-                <div className="ml-2 mt-5 mb-2 font-light text-blue-500">Time format:</div>
-                <div className="flex flex-row ml-2">
-                  <button className={use24Hour ? inactiveBtnState : activeBtnState} onClick = {() => this.setState({use24Hour:false})}>12H</button>
-                  <button className={use24Hour ? activeBtnState : inactiveBtnState} onClick = {() => this.setState({use24Hour:true})}>24H</button>
-                </div>
-              </div>
-            </div>
-            <div className="inline-flex flex-col justify-center w-3/4">
-                <div className="inline-flex flex-col">
-                      <Header headerData={header} date={date} use24Hour={use24Hour} degreesFormat={degreesFormat}/>
-                      <ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} degreesFormat={degreesFormat} use24Hour={use24Hour} pastData={this.state.past} />
-                      <WeatherForecast forecastData={this.state.forecast} degreesFormat={degreesFormat} />
-                </div>
-            </div>
+        <div className={AppContainer}>
+          <ControlPanel use24Hour={use24Hour} degreesFormat={degreesFormat} setTemperatureFormat={this.setTemperatureFormat} setTimeFormat={this.setTimeFormat} />
+          <div className="inline-flex flex-col justify-center lg:w-3/4 w-11/12">
+              <Header headerData={header} date={date} use24Hour={use24Hour} degreesFormat={degreesFormat} toggleRaspberrySettings={this.toggleRaspberrySettings} />
+              { showRaspberrySettings ? (
+                <RaspberrySettings degreesFormat={degreesFormat} use24Hour={use24Hour} setTemperatureFormat={this.setTemperatureFormat} setTimeFormat={this.setTimeFormat} />
+              ): null}
+              <ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} degreesFormat={degreesFormat} use24Hour={use24Hour} pastData={this.state.past} showThermModal={showThermModal} />
+              <WeatherForecast forecastData={this.state.forecast} degreesFormat={degreesFormat} />
+          </div>
         </div>
-        {this.state.showThermModal ? <ThermModal therma={this.state.thermostats[this.state.thermModalIdx]} updateModalDisplay={this.closeModal} degreesFormat={degreesFormat} use24Hour={use24Hour} /> : <div />}
+        {showThermModal ? (
+          <ThermModal therm={this.state.thermostats[this.state.thermModalIdx]} updateModalDisplay={this.closeModal} degreesFormat={degreesFormat} use24Hour={use24Hour} showThermModal={showThermModal} />
+        ) : null}
       </>
       );
   }

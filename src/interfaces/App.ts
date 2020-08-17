@@ -1,11 +1,6 @@
-import HeaderState from '../interfaces/Header';
-import ThermostatState from '../interfaces/Therm';
-import ForecastState from '../interfaces/Forecast';
-import {timeZone} from '../config';
+import {Forecast as ForecastState, Header as HeaderState, Therm as ThermostatState} from '../interfaces';
 
-const date = new Date().toLocaleString('en-US', {timeZone})
-
-export interface AppState {
+export type AppState = {
     date: Date;
     header: HeaderState;
     thermostats: ThermostatState[],
@@ -15,6 +10,7 @@ export interface AppState {
     thermModalIdx: number,
     use24Hour: boolean,
     degreesFormat: string,
+    showRaspberrySettings: boolean,
 }
 
 export function init(): AppState {
@@ -28,5 +24,6 @@ export function init(): AppState {
         thermModalIdx: -1,
         use24Hour: true,
         degreesFormat: 'Fahrenheit',
+        showRaspberrySettings: false,
     }
 }

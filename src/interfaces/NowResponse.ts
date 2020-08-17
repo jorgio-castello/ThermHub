@@ -1,7 +1,6 @@
-import Therma from "./Therm";
-import Forecast from "./Forecast";
+import {Forecast, Therm} from "./";
 
 export interface NowResponse {
     forecast: Forecast[],
-    thermostats: Therma[],
+    thermostats: Therm[],
 }

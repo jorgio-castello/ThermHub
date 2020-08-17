@@ -11,11 +11,15 @@ function getOffset(): void {
     });
 }
 
-export function getDate(): Date|undefined {
+export function getNow(): Date {
   let now: Date;
   now = new Date((new Date()).getTime() + offset);
   now = new Date(now.toLocaleString('en-US', {timeZone}));
+  return now;
+}
 
+export function getDate(): Date|undefined {
+  const now = getNow();
   if (lastTimestamp === undefined) {
     getOffset();
     lastTimestamp = now;

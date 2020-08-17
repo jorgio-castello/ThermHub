@@ -1,3 +1,3 @@
 export type TimeFormat = {
-    use24Hour: boolean,
+	use24Hour: boolean,
 }

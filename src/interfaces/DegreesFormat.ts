@@ -1,3 +1,3 @@
 export type DegreesFormat = {
-    degreesFormat: string,
+	degreesFormat: string,
 }

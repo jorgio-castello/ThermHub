@@ -1,2 +1,2 @@
-export const generateAxesY = (temperatureArr: number[]) => {};
-export const generateAxesX = (timeArr: Date[]) => {};
+export const generateAxesY = (temperatureArr: number[]) => { };
+export const generateAxesX = (timeArr: Date[]) => { };

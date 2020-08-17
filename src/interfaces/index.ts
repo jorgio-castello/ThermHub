@@ -6,7 +6,7 @@ import { Forecast as Forecast_ } from './Forecast';
 import { ForecastProps as ForecastProps_ } from './ForecastProps';
 import { ForecastTileProps as ForecastTileProps_ } from './ForecastTileProps';
 import { Header as Header_ } from './Header';
-import { HeaderProps as HeaderProps_ } from  './HeaderProps';
+import { HeaderProps as HeaderProps_ } from './HeaderProps';
 import { NowResponse as NowResponse_ } from './NowResponse';
 import { RaspberrySettingsProps as RaspberrySettingsProps_ } from './RaspberrySettingsProps';
 import { Therm as Therm_ } from './Therm';

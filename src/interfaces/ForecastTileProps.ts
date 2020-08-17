@@ -1,6 +1,6 @@
 import { Forecast } from "./";
 
 export type ForecastTileProps = {
-    forecast: Forecast,
-    degreesFormat: string,
+	forecast: Forecast,
+	degreesFormat: string,
 }

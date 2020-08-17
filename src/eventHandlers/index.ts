@@ -2,24 +2,24 @@ import App from '../components/App';
 import { DegreesFormat, TimeFormat } from '../interfaces';
 
 export function toggleRaspberrySettings(this: App): void {
-    this.setState({ showRaspberrySettings: ! this.state.showRaspberrySettings});
+	this.setState({ showRaspberrySettings: !this.state.showRaspberrySettings });
 }
 
 export function setTimeFormat(this: App, use24Hour: TimeFormat): void {
-    this.setState(use24Hour);
+	this.setState(use24Hour);
 }
 
 export function setTemperatureFormat(this: App, degreesFormat: DegreesFormat): void {
-    this.setState(degreesFormat);
+	this.setState(degreesFormat);
 }
 
 export function closeModal(this: App): void {
-    this.setState({ showThermModal: false, thermModalIdx: -1 });
+	this.setState({ showThermModal: false, thermModalIdx: -1 });
 }
 
-export function expandThermPanel(this: App, e:Event): void {
-    const target = e.currentTarget as HTMLInputElement;
-    const index = Number(target.getAttribute('id'));
+export function expandThermPanel(this: App, e: Event): void {
+	const target = e.currentTarget as HTMLInputElement;
+	const index = Number(target.getAttribute('id'));
 
-    this.setState({ showThermModal: true, thermModalIdx: index })
+	this.setState({ showThermModal: true, thermModalIdx: index })
 }

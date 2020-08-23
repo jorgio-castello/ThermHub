@@ -1,10 +1,10 @@
-import { host, timeZone } from '../config';
+import { host, timeZone, headers } from '../config';
 
 let lastTimestamp: Date | undefined;
 let offset = 0;
 
 function getOffset(): void {
-	fetch(`${host}/time`)
+	fetch(`${host}/time`, { headers })
 		.then(res => res.text())
 		.then(text => {
 			offset = (new Date()).getTime() - (parseInt(text, 10) * 1000);

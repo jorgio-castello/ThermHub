@@ -23,3 +23,7 @@ export function expandThermPanel(this: App, e: Event): void {
 
 	this.setState({ showThermModal: true, thermModalIdx: index })
 }
+
+export function setThermInterval(this: App, thermInterval: number): void {
+	this.setState({ thermInterval })
+}

@@ -12,7 +12,7 @@ function ThermPanel(props: ThermPanelProps) {
 				</div>
 			</div>
 			<div className="flex flex-row lg:p-5 rounded-lg lg:shadow-lg lg:bg-blue-100 lg:bg-opacity-75 justify-between lg:justify-start lg:border lg:border-solid lg:border-indigo-200">
-				{props.thermostatData.map((thermostat, index) => <ThermPanelChild thermostat={thermostat} width="1/3" key={index} id={index} updateModalDisplay={props.expandThermPanel} degreesFormat={props.degreesFormat} use24Hour={props.use24Hour} past={pastData(thermostat)} showThermModal={props.showThermModal} />)}
+				{props.thermostatData.map((thermostat, index) => <ThermPanelChild thermostat={thermostat} width="1/3" key={index} id={index} updateModalDisplay={props.expandThermPanel} degreesFormat={props.degreesFormat} use24Hour={props.use24Hour} past={pastData(thermostat)} showThermModal={props.showThermModal} thermInterval={props.thermInterval} />)}
 			</div>
 		</div>
 	);

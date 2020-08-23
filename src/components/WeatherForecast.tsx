@@ -4,7 +4,6 @@ import { ForecastProps } from '../interfaces';
 
 function WeatherForecast(props: ForecastProps) {
 	let data = props.forecastData.sort((a, b) => Number(new Date(a.date)) - Number(new Date(b.date)));
-
 	return (
 		<>
 			<div className="lg:flex flex-col mt-10 hidden">

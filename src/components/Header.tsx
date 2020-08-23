@@ -11,8 +11,8 @@ function Header({ headerData, date, use24Hour, degreesFormat, toggleRaspberrySet
 	return (
 		<div className="flex flex-row bg-white py-2 px-12 sm:px-6 sm:py-1 shadow-xl rounded-lg">
 			<div className="flex flex-row w-7/12 mx-auto justify-start items-center">
-				<div className="flex-col">
-					<div className="font-light lg:text-3xl text-2xl text-left text-blue-300">
+				<div className="flex flex-col font-light lg:text-3xl text-2xl text-left text-blue-300">
+					<div className="flex-row">
 						<span className="mr-1">
 							{`${headerData.city},`}
 						</span>
@@ -20,13 +20,13 @@ function Header({ headerData, date, use24Hour, degreesFormat, toggleRaspberrySet
 							{headerData.state}
 						</span>
 					</div>
-					<button className="lg:hidden" onClick={() => toggleRaspberrySettings()}>
-						<MenuSvg className="w-6 h-6" />
-					</button>
 				</div>
 				<div className="mr-5">
-					<div className="font-thin lg:text-6xl text-5xl text-teal-300">{`${temperature}\u00b0${degreesFormat[0]}`}</div>
+					<div className="flex font-thin lg:text-6xl text-5xl text-teal-300 items-start">{`${temperature}\u00b0${degreesFormat[0]}`}</div>
 				</div>
+				<button className="inline-flex lg:hidden" onClick={() => toggleRaspberrySettings()}>
+					<MenuSvg className="w-8 h-8" />
+				</button>
 			</div>
 
 			<div className="w-5/12 flex flex-col text-right">

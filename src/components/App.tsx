@@ -3,7 +3,7 @@ import CONFIG from '../config';
 import { ControlPanel, Header, RaspberrySettings, ThermModal, ThermPanel, WeatherForecast } from './';
 import { AppState, init, DegreesFormat, generateHeader, NowResponse, Therm, TimeFormat } from '../interfaces';
 import { getDate, getNow } from '../helpers'
-import { closeModal, expandThermPanel, setTemperatureFormat, setTimeFormat, toggleRaspberrySettings } from '../eventHandlers';
+import { closeModal, expandThermPanel, setTemperatureFormat, setTimeFormat, toggleRaspberrySettings, setThermInterval } from '../eventHandlers';
 import { AppContainer } from '../assets/cssClasses';
 
 class App extends React.Component<{}, AppState> {
@@ -17,6 +17,7 @@ class App extends React.Component<{}, AppState> {
 		this.expandThermPanel = expandThermPanel.bind(this);
 		this.setTemperatureFormat = setTemperatureFormat.bind(this);
 		this.setTimeFormat = setTimeFormat.bind(this);
+		this.setThermInterval = setThermInterval.bind(this);
 		this.toggleRaspberrySettings = toggleRaspberrySettings.bind(this);
 	}
 
@@ -40,6 +41,7 @@ class App extends React.Component<{}, AppState> {
 	toggleRaspberrySettings(): void { };
 	setTimeFormat(use24Hour: TimeFormat): void { };
 	setTemperatureFormat(degreesFormat: DegreesFormat): void { };
+	setThermInterval(thermInterval: number): void { };
 
 	private startTimeThread(): void {
 		this.timeThread = window.setInterval(() => {
@@ -54,32 +56,35 @@ class App extends React.Component<{}, AppState> {
 	private async updateData(now: Date): Promise<void> {
 		await this.fetchNow()
 			.then(data => {
-				console.log(data);
-				const { forecast, thermostats } = data;
+				const { forecast_daily, thermostats } = data;
 				const currentWeatherData = thermostats.find(therm => therm.name === 'weather.gov');
 
 				this.setState({
 					header: generateHeader(CONFIG.city, CONFIG.state, currentWeatherData?.temperature),
 					thermostats,
-					forecast,
+					forecast_daily,
 					date: now,
 				});
 			});
 		await this.fetchPast(new Date(now.getTime() - 43200000), now)
 			.then(past => {
-				console.log(past);
-				this.setState({ past });
+				if (past.length > 0) {
+					this.setState({ past });
+				}
 			});
 	}
 
-	private fetchNow = (): Promise<NowResponse> =>
-		fetch(`${CONFIG.host}/now`).then(res => res.json());
+	private fetchNow = (): Promise<NowResponse> => {
+		return fetch(`${CONFIG.host}/now`, { headers: CONFIG.headers }).then(res => res.json());
+	}
 
-	private fetchPast = (after: Date, before: Date): Promise<Therm[]> =>
-		fetch(`${CONFIG.host}/past?start_date=${after.toISOString()}&end_date=${before.toISOString()}`).then(res => res.json());
+	private fetchPast = (after: Date, before: Date): Promise<Therm[]> => {
+		let query = `${CONFIG.host}/past?start_date=${after.toISOString()}&end_date=${before.toISOString()}`;
+		return fetch(query, { headers: CONFIG.headers }).then(res => res.json());
+	}
 
 	render() {
-		const { header, date, use24Hour, degreesFormat, showThermModal, showRaspberrySettings } = this.state;
+		const { header, date, use24Hour, degreesFormat, past, showThermModal, showRaspberrySettings, thermInterval } = this.state;
 		return (
 			<>
 				<div className={AppContainer}>
@@ -87,14 +92,14 @@ class App extends React.Component<{}, AppState> {
 					<div className="inline-flex flex-col justify-center lg:w-3/4 w-11/12">
 						<Header headerData={header} date={date} use24Hour={use24Hour} degreesFormat={degreesFormat} toggleRaspberrySettings={this.toggleRaspberrySettings} />
 						{showRaspberrySettings ? (
-							<RaspberrySettings degreesFormat={degreesFormat} use24Hour={use24Hour} setTemperatureFormat={this.setTemperatureFormat} setTimeFormat={this.setTimeFormat} />
+							<RaspberrySettings degreesFormat={degreesFormat} use24Hour={use24Hour} setTemperatureFormat={this.setTemperatureFormat} setTimeFormat={this.setTimeFormat} setThermInterval={this.setThermInterval} thermInterval={thermInterval} />
 						) : null}
-						<ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} degreesFormat={degreesFormat} use24Hour={use24Hour} pastData={this.state.past} showThermModal={showThermModal} />
-						<WeatherForecast forecastData={this.state.forecast} degreesFormat={degreesFormat} />
+						<ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} degreesFormat={degreesFormat} use24Hour={use24Hour} pastData={past} showThermModal={showThermModal} thermInterval={thermInterval} />
+						<WeatherForecast forecastData={this.state.forecast_daily} degreesFormat={degreesFormat} />
 					</div>
 				</div>
 				{showThermModal ? (
-					<ThermModal therm={this.state.thermostats[this.state.thermModalIdx]} updateModalDisplay={this.closeModal} degreesFormat={degreesFormat} use24Hour={use24Hour} showThermModal={showThermModal} />
+					<ThermModal therm={this.state.thermostats[this.state.thermModalIdx]} updateModalDisplay={this.closeModal} degreesFormat={degreesFormat} use24Hour={use24Hour} showThermModal={showThermModal} past={past} setThermInterval={this.setThermInterval} thermInterval={thermInterval} />
 				) : null}
 			</>
 		);

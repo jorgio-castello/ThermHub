@@ -1,8 +1,9 @@
-export const host: string = 'http://localhost';
-const port: number = 3000;
+export const host = '';
+export const headers = {};
+const port = 3000;
 
-const city: string = 'Madison';
-const state: string = 'Wisconsin';
-export const timeZone: string = 'America/Chicago';
+const city = 'Madison';
+const state = 'Wisconsin';
+export const timeZone = 'America/Chicago';
 
-export default { host, port, city, state };
+export default { host, port, city, state, headers };

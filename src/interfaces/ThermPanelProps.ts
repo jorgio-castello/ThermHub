@@ -7,4 +7,5 @@ export type ThermPanelProps = {
 	use24Hour: boolean,
 	pastData: Therm[],
 	showThermModal: boolean,
+	thermInterval: number,
 }

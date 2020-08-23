@@ -8,5 +8,7 @@ export type ThermChildProps = {
 	width: string,
 	degreesFormat: string,
 	use24Hour: boolean,
+	isModal?: boolean,
 	id?: any,
+	thermInterval: number,
 }

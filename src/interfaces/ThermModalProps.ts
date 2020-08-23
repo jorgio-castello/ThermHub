@@ -6,4 +6,7 @@ export type ThermModalProps = {
 	degreesFormat: string,
 	use24Hour: boolean,
 	showThermModal: boolean,
+	past: Therm[],
+	thermInterval: number,
+	setThermInterval: Function,
 }

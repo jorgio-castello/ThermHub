@@ -1,6 +1,6 @@
 import { Forecast, Therm } from "./";
 
 export interface NowResponse {
-	forecast: Forecast[],
+	forecast_daily: Forecast[],
 	thermostats: Therm[],
 }

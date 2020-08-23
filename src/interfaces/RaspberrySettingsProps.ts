@@ -3,4 +3,6 @@ export type RaspberrySettingsProps = {
 	use24Hour: boolean,
 	setTemperatureFormat: Function,
 	setTimeFormat: Function,
+	setThermInterval: Function,
+	thermInterval: number,
 }

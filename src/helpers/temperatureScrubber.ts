@@ -1,6 +1,10 @@
-export default function (temp: number, degreesFormat: string): number | undefined {
+export default function (temp: number, degreesFormat: string): number {
 	if (temp === -1000) {
-		return undefined;
+		return -1000;
+	}
+
+	if (temp < 100) { // temporary fix, due to weather.gov sending back data below 100
+		temp *= 10;
 	}
 
 	switch (degreesFormat) {

@@ -1,8 +1,8 @@
 import React from 'react';
-import { ThermChildProps } from '../interfaces';
+import { ThermChildProps } from '../../interfaces';
 import { Line } from 'react-chartjs-2';
 import ThermPanelChildHeader from './ThermPanelChildHeader';
-import { generateAxes } from '../helpers/generateGraphData';
+import { generateAxes } from '../../helpers/generateGraphData';
 
 function ThermPanelChild(props: ThermChildProps) {
 	let dateAxis, temperatureAxis, humidityAxis;

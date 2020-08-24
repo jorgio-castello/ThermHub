@@ -1,6 +1,6 @@
 import React from 'react';
-import { ControlPanelProps } from '../interfaces';
-import { activeBtnState, inactiveBtnState } from '../assets/cssClasses';
+import { ControlPanelProps } from '../../interfaces';
+import { activeBtnState, inactiveBtnState } from '../../assets/cssClasses';
 
 export default function ({ degreesFormat, use24Hour, setTemperatureFormat, setTimeFormat }: ControlPanelProps) {
 	return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import ThermPanelChild from './ThermPanelChild';
-import { Therm, ThermPanelProps } from '../interfaces';
+import { Therm, ThermPanelProps } from '../../interfaces';
 
 function ThermPanel(props: ThermPanelProps) {
 	let pastData = (therma: Therm) => props.pastData.filter((theTherma) => therma.name === theTherma.name);

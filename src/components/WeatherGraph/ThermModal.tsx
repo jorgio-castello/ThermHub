@@ -1,7 +1,7 @@
 import React from 'react';
 import ThermPanelChild from './ThermPanelChild';
-import { ThermModalProps, Therm } from '../interfaces';
-import { activeModalBtn, inactiveModalBtn } from '../assets/cssClasses';
+import { ThermModalProps, Therm } from '../../interfaces';
+import { activeModalBtn, inactiveModalBtn } from '../../assets/cssClasses';
 
 export default function ThermModal(props: ThermModalProps) {
 	let pastData = (therma: Therm) => props.past.filter((theTherma) => therma.name === theTherma.name);

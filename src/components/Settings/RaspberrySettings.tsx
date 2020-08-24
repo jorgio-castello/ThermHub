@@ -1,6 +1,6 @@
 import React from 'react';
-import { RaspberrySettingsProps } from '../interfaces';
-import { activeBtnStateSm, inactiveBtnStateSm } from '../assets/cssClasses';
+import { RaspberrySettingsProps } from '../../interfaces';
+import { activeBtnStateSm, inactiveBtnStateSm } from '../../assets/cssClasses';
 
 export default function ({ degreesFormat, use24Hour, setTemperatureFormat, setTimeFormat, thermInterval, setThermInterval }: RaspberrySettingsProps) {
 	return (

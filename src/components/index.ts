@@ -1,9 +1,9 @@
-import ControlPanel from './ControlPanel';
+import ControlPanel from './Settings/ControlPanel';
 import Header from './Header';
-import RaspberrySettings from './RaspberrySettings';
-import ThermModal from './ThermModal';
-import ThermPanel from './ThermPanel';
-import ThermPanelChild from './ThermPanelChild';
-import WeatherForecast from './WeatherForecast';
-import WeatherForecastTile from './WeatherForecastTile';
+import RaspberrySettings from './Settings/RaspberrySettings';
+import ThermModal from './WeatherGraph/ThermModal';
+import ThermPanel from './WeatherGraph/ThermPanel';
+import ThermPanelChild from './WeatherGraph/ThermPanelChild';
+import WeatherForecast from './WeatherForecast/WeatherForecast';
+import WeatherForecastTile from './WeatherForecast/WeatherForecastTile';
 export { ControlPanel, Header, RaspberrySettings, ThermModal, ThermPanel, ThermPanelChild, WeatherForecast, WeatherForecastTile };

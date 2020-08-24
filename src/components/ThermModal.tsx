@@ -14,7 +14,7 @@ export default function ThermModal(props: ThermModalProps) {
 					<div className="text-center font-thin text-xl bg-indigo-600 p-3 rounded-lg text-white shadow-lg">{props.therm.name}</div>
 					<div className="flex flex-row justify-around mt-5">
 						{timelines.map((timeline, index) => (
-							<button className={props.thermInterval === intervals[index] ? activeModalBtn : inactiveModalBtn} onClick={() => props.setThermInterval(intervals[index])}>
+							<button key={index} className={props.thermInterval === intervals[index] ? activeModalBtn : inactiveModalBtn} onClick={() => props.setThermInterval(intervals[index])}>
 								{timeline}
 							</button>
 						))}

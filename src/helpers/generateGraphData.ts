@@ -38,8 +38,14 @@ export function generateAxes(pastData: Therm[], numberOfTicks: number, degreesFo
     numberOfTicks = numberOfTicks % 2 === 1 ? numberOfTicks : numberOfTicks - 1;
     const indices = generateIndices(numberOfTicks, pastData.length - 1);
 
-    const pointsX: string[] = indices.map(idx => formatPastTime(use24Hour, new Date(pastData[idx].time), true));
-    const pointsY: number[] = indices.map(idx => scrubTemperature(pastData[idx].temperature, degreesFormat));
-    return [pointsX, pointsY];
+    const dateAxis: string[] = indices.map(idx => formatPastTime(use24Hour, new Date(pastData[idx].time), true));
+    const temperatureAxis: number[] = indices.map(idx => scrubTemperature(pastData[idx].temperature, degreesFormat));
+    const humidityAxis: number[] = [];
+    indices.forEach(idx => {
+      if (pastData[idx].is_hygrostat) {
+        humidityAxis.push(pastData[idx].relative_humidity / 100);
+      }
+    })
+    return [dateAxis, temperatureAxis, humidityAxis];
   }
 }

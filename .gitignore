@@ -1,3 +1,4 @@
+build
 node_modules/
 src/config.ts
 src/ThermHub_PastData.js

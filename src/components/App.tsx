@@ -1,10 +1,9 @@
 import React from 'react';
 import CONFIG from '../config';
-import { ControlPanel, Header, RaspberrySettings, ThermModal, ThermPanel, WeatherForecast } from './';
+import { Dashboard } from './';
 import { AppState, init, DegreesFormat, generateHeader, NowResponse, Therm, TimeFormat } from '../interfaces';
 import { getDate, getNow } from '../helpers'
 import { closeModal, expandThermPanel, setTemperatureFormat, setTimeFormat, toggleRaspberrySettings, setThermInterval } from '../eventHandlers';
-import { AppContainer } from '../assets/cssClasses';
 
 class App extends React.Component<{}, AppState> {
 	private timeThread = 0;
@@ -23,6 +22,8 @@ class App extends React.Component<{}, AppState> {
 
 	componentDidMount(): void {
 		const startTime = getNow();
+		this.fetchScreenSaver()
+			.then(photo => this.setState({ screenSaverUrl: URL.createObjectURL(photo) }));
 		this.updateData(startTime)
 			.then(() => {
 				this.startTimeThread();
@@ -68,9 +69,9 @@ class App extends React.Component<{}, AppState> {
 			});
 		await this.fetchPast(new Date(now.getTime() - 43200000), now)
 			.then(past => {
-				if (past.length > 0) {
-					this.setState({ past });
-				}
+				// if (past.length > 0) {
+				// 	this.setState({ past });
+				// }
 			});
 	}
 
@@ -83,25 +84,32 @@ class App extends React.Component<{}, AppState> {
 		return fetch(query, { headers: CONFIG.headers }).then(res => res.json());
 	}
 
+	private fetchScreenSaver = () => {
+		return fetch(`${CONFIG.host}/background-photos`, { headers: CONFIG.headers }).then(res => res.blob());
+	}
+
 	render() {
-		const { header, date, use24Hour, degreesFormat, past, showThermModal, showRaspberrySettings, thermInterval } = this.state;
+		const { header, date, forecast_daily, use24Hour, degreesFormat, past, screenSaverUrl, showThermModal, showRaspberrySettings, thermModalIdx, thermInterval, thermostats } = this.state;
 		return (
-			<>
-				<div className={AppContainer}>
-					<ControlPanel use24Hour={use24Hour} degreesFormat={degreesFormat} setTemperatureFormat={this.setTemperatureFormat} setTimeFormat={this.setTimeFormat} />
-					<div className="inline-flex flex-col justify-center lg:w-3/4 w-11/12">
-						<Header headerData={header} date={date} use24Hour={use24Hour} degreesFormat={degreesFormat} toggleRaspberrySettings={this.toggleRaspberrySettings} />
-						{showRaspberrySettings ? (
-							<RaspberrySettings degreesFormat={degreesFormat} use24Hour={use24Hour} setTemperatureFormat={this.setTemperatureFormat} setTimeFormat={this.setTimeFormat} setThermInterval={this.setThermInterval} thermInterval={thermInterval} />
-						) : null}
-						<ThermPanel thermostatData={this.state.thermostats} expandThermPanel={this.expandThermPanel} degreesFormat={degreesFormat} use24Hour={use24Hour} pastData={past} showThermModal={showThermModal} thermInterval={thermInterval} />
-						<WeatherForecast forecastData={this.state.forecast_daily} degreesFormat={degreesFormat} />
-					</div>
-				</div>
-				{showThermModal ? (
-					<ThermModal therm={this.state.thermostats[this.state.thermModalIdx]} updateModalDisplay={this.closeModal} degreesFormat={degreesFormat} use24Hour={use24Hour} showThermModal={showThermModal} past={past} setThermInterval={this.setThermInterval} thermInterval={thermInterval} />
-				) : null}
-			</>
+			<Dashboard
+				header={header}
+				date={date}
+				forecast_daily={forecast_daily}
+				use24Hour={use24Hour}
+				degreesFormat={degreesFormat}
+				past={past}
+				showThermModal={showThermModal}
+				showRaspberrySettings={showRaspberrySettings}
+				thermInterval={thermInterval}
+				setTemperatureFormat={this.setTemperatureFormat}
+				setThermInterval={this.setThermInterval}
+				setTimeFormat={this.setTimeFormat}
+				thermModalIdx={thermModalIdx}
+				toggleRaspberrySettings={this.toggleRaspberrySettings}
+				thermostats={thermostats}
+				updateModalDisplay={this.closeModal}
+				expandThermPanel={this.expandThermPanel}
+			/>
 		);
 	}
 }

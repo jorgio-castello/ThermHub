@@ -1,6 +1,7 @@
 // Import types / interfaces
 import { AppState as AppState_ } from './App';
 import { ControlPanelProps as ControlPanelProps_ } from './ControlPanelProps';
+import { DashboardProps as DashboardProps_ } from './DashboardProps';
 import { DegreesFormat as DegreesFormat_ } from './DegreesFormat';
 import { Forecast as Forecast_ } from './Forecast';
 import { ForecastProps as ForecastProps_ } from './ForecastProps';
@@ -22,6 +23,7 @@ export { Calendar };
 // Export types / interfaces
 export type AppState = AppState_;
 export type ControlPanelProps = ControlPanelProps_;
+export type DashboardProps = DashboardProps_;
 export type DegreesFormat = DegreesFormat_;
 export type Forecast = Forecast_;
 export type ForecastProps = ForecastProps_;

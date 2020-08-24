@@ -43,7 +43,10 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.8.5",
+    "electron": "^9.2.1",
     "postcss-cli": "^7.1.1",
     "tailwindcss": "^1.5.1"
-  }
+  },
+  "main": "main.js",
+  "homepage": "."
 }

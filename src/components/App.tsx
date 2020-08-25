@@ -1,16 +1,18 @@
 import React from 'react';
 import CONFIG from '../config';
 import { Dashboard, Screensaver } from './';
-import { AppState, init, DegreesFormat, generateHeader, NowResponse, Therm, TimeFormat } from '../interfaces';
+import { DegreesFormat, generateHeader, NowResponse, Therm, TimeFormat } from '../interfaces';
 import { convertBinaryToBase64, getDate, getNow } from '../helpers'
 import { closeModal, expandThermPanel, setTemperatureFormat, setTimeFormat, toggleRaspberrySettings, setThermInterval } from '../eventHandlers';
+import { AppState, Screen } from '../interfaces/App';
+import ScreenSaver from './Screensaver';
 
 class App extends React.Component<{}, AppState> {
 	private timeThread = 0;
 
 	constructor(props: {}) {
 		super(props);
-		this.state = init();
+		this.state = AppState.default();
 
 		this.closeModal = closeModal.bind(this);
 		this.expandThermPanel = expandThermPanel.bind(this);
@@ -48,7 +50,7 @@ class App extends React.Component<{}, AppState> {
 		this.timeThread = window.setInterval(() => {
 			const date = getDate();
 			if (date !== undefined) {
-				this.setState({ date });
+				this.setState({ date, screen: Screen.ScreenSaver });
 				this.updateData(date);
 			}
 		}, 2000);
@@ -63,8 +65,7 @@ class App extends React.Component<{}, AppState> {
 				this.setState({
 					header: generateHeader(CONFIG.city, CONFIG.state, currentWeatherData?.temperature),
 					thermostats,
-					forecast_daily,
-					date: now,
+					forecastDaily: forecast_daily,
 				});
 			});
 		await this.fetchPast(new Date(now.getTime() - 43200000), now)
@@ -93,30 +94,30 @@ class App extends React.Component<{}, AppState> {
 	}
 
 	render() {
-		const { header, date, forecast_daily, use24Hour, degreesFormat, past, screenSaverSrc, showScreenSaver, showThermModal, showRaspberrySettings, thermModalIdx, thermInterval, thermostats } = this.state;
+		const { header, date, forecastDaily, use24Hour, degreesFormat, past, screenSaverSrc, screen, showThermModal, showRaspberrySettings, thermModalIdx, thermInterval, thermostats } = this.state;
 		return (
 			<>
-				{showScreenSaver ? <Screensaver screenSaverSrc={screenSaverSrc} /> : (
-					<Dashboard
-						header={header}
-						date={date}
-						forecast_daily={forecast_daily}
-						use24Hour={use24Hour}
-						degreesFormat={degreesFormat}
-						past={past}
-						showThermModal={showThermModal}
-						showRaspberrySettings={showRaspberrySettings}
-						thermInterval={thermInterval}
-						setTemperatureFormat={this.setTemperatureFormat}
-						setThermInterval={this.setThermInterval}
-						setTimeFormat={this.setTimeFormat}
-						thermModalIdx={thermModalIdx}
-						toggleRaspberrySettings={this.toggleRaspberrySettings}
-						thermostats={thermostats}
-						updateModalDisplay={this.closeModal}
-						expandThermPanel={this.expandThermPanel}
-					/>
-				)}
+				<ScreenSaver date={date} screenSaverSrc={screenSaverSrc} screen={screen} tap={() => this.setState({ screen: Screen.Dashboard })} />
+				<Dashboard
+					header={header}
+					date={date}
+					forecast_daily={forecastDaily}
+					use24Hour={use24Hour}
+					degreesFormat={degreesFormat}
+					past={past}
+					showThermModal={showThermModal}
+					showRaspberrySettings={showRaspberrySettings}
+					thermInterval={thermInterval}
+					setTemperatureFormat={this.setTemperatureFormat}
+					setThermInterval={this.setThermInterval}
+					setTimeFormat={this.setTimeFormat}
+					screen={screen}
+					thermModalIdx={thermModalIdx}
+					toggleRaspberrySettings={this.toggleRaspberrySettings}
+					thermostats={thermostats}
+					updateModalDisplay={this.closeModal}
+					expandThermPanel={this.expandThermPanel}
+				/>
 			</>
 		);
 	}

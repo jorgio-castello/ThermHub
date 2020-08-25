@@ -2,8 +2,12 @@ import React from 'react';
 import { AppContainer } from '../assets/cssClasses';
 import { ControlPanel, Header, RaspberrySettings, ThermModal, ThermPanel, WeatherForecast } from './';
 import { DashboardProps } from '../interfaces';
+import { Screen } from '../interfaces/App';
 
 function Dashboard(props: DashboardProps) {
+  if (props.screen !== Screen.Dashboard) {
+    return null;
+  }
   const { header, date, forecast_daily, use24Hour, degreesFormat, past, showThermModal, showRaspberrySettings, thermInterval, thermModalIdx, thermostats } = props;
   return (
     <>

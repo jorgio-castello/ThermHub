@@ -1,8 +1,8 @@
 import React from 'react';
 import CONFIG from '../config';
-import { Dashboard } from './';
+import { Dashboard, Screensaver } from './';
 import { AppState, init, DegreesFormat, generateHeader, NowResponse, Therm, TimeFormat } from '../interfaces';
-import { getDate, getNow } from '../helpers'
+import { convertBinaryToBase64, getDate, getNow } from '../helpers'
 import { closeModal, expandThermPanel, setTemperatureFormat, setTimeFormat, toggleRaspberrySettings, setThermInterval } from '../eventHandlers';
 
 class App extends React.Component<{}, AppState> {
@@ -23,7 +23,7 @@ class App extends React.Component<{}, AppState> {
 	componentDidMount(): void {
 		const startTime = getNow();
 		this.fetchScreenSaver()
-			.then(photo => this.setState({ screenSaverUrl: URL.createObjectURL(photo) }));
+			.then(screenSaverSrc => this.setState({ screenSaverSrc }));
 		this.updateData(startTime)
 			.then(() => {
 				this.startTimeThread();
@@ -85,31 +85,39 @@ class App extends React.Component<{}, AppState> {
 	}
 
 	private fetchScreenSaver = () => {
-		return fetch(`${CONFIG.host}/background-photos`, { headers: CONFIG.headers }).then(res => res.blob());
+		return fetch(`${CONFIG.host}/background-photos`, { headers: CONFIG.headers })
+			.then(res => res.blob())
+			// @ts-ignore is required here as Node's defn of blob doens't contain arrayBuffer
+			.then(blob => blob.arrayBuffer())
+			.then(bytes => convertBinaryToBase64(bytes))
 	}
 
 	render() {
-		const { header, date, forecast_daily, use24Hour, degreesFormat, past, screenSaverUrl, showThermModal, showRaspberrySettings, thermModalIdx, thermInterval, thermostats } = this.state;
+		const { header, date, forecast_daily, use24Hour, degreesFormat, past, screenSaverSrc, showScreenSaver, showThermModal, showRaspberrySettings, thermModalIdx, thermInterval, thermostats } = this.state;
 		return (
-			<Dashboard
-				header={header}
-				date={date}
-				forecast_daily={forecast_daily}
-				use24Hour={use24Hour}
-				degreesFormat={degreesFormat}
-				past={past}
-				showThermModal={showThermModal}
-				showRaspberrySettings={showRaspberrySettings}
-				thermInterval={thermInterval}
-				setTemperatureFormat={this.setTemperatureFormat}
-				setThermInterval={this.setThermInterval}
-				setTimeFormat={this.setTimeFormat}
-				thermModalIdx={thermModalIdx}
-				toggleRaspberrySettings={this.toggleRaspberrySettings}
-				thermostats={thermostats}
-				updateModalDisplay={this.closeModal}
-				expandThermPanel={this.expandThermPanel}
-			/>
+			<>
+				{showScreenSaver ? <Screensaver screenSaverSrc={screenSaverSrc} /> : (
+					<Dashboard
+						header={header}
+						date={date}
+						forecast_daily={forecast_daily}
+						use24Hour={use24Hour}
+						degreesFormat={degreesFormat}
+						past={past}
+						showThermModal={showThermModal}
+						showRaspberrySettings={showRaspberrySettings}
+						thermInterval={thermInterval}
+						setTemperatureFormat={this.setTemperatureFormat}
+						setThermInterval={this.setThermInterval}
+						setTimeFormat={this.setTimeFormat}
+						thermModalIdx={thermModalIdx}
+						toggleRaspberrySettings={this.toggleRaspberrySettings}
+						thermostats={thermostats}
+						updateModalDisplay={this.closeModal}
+						expandThermPanel={this.expandThermPanel}
+					/>
+				)}
+			</>
 		);
 	}
 }

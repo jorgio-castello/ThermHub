@@ -13,7 +13,8 @@ export type AppState = {
 	degreesFormat: string,
 	showRaspberrySettings: boolean,
 	thermInterval: number,
-	screenSaverUrl: string,
+	screenSaverSrc: string[],
+	showScreenSaver: boolean,
 }
 
 export function init(): AppState {
@@ -29,6 +30,7 @@ export function init(): AppState {
 		degreesFormat: 'Fahrenheit',
 		showRaspberrySettings: false,
 		thermInterval: 289, // representive of # of 5min intervals, 289 in 24 hours, inclusive of startTime
-		screenSaverUrl: '',
+		screenSaverSrc: [''],
+		showScreenSaver: true,
 	}
 }

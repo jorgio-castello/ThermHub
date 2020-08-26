@@ -70,9 +70,9 @@ class App extends React.Component<{}, AppState> {
 			});
 		await this.fetchPast(new Date(now.getTime() - 43200000), now)
 			.then(past => {
-				// if (past.length > 0) {
-				// 	this.setState({ past });
-				// }
+				if (past.length > 0) {
+					this.setState({ past });
+				}
 			});
 	}
 

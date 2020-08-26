@@ -1,4 +1,5 @@
 import { Forecast as ForecastState, Header as HeaderState, Therm as ThermostatState } from '../interfaces';
+import { Screen } from './App';
 
 export type DashboardProps = {
   header: HeaderState,
@@ -13,6 +14,7 @@ export type DashboardProps = {
   setTemperatureFormat: Function,
   setThermInterval: Function,
   setTimeFormat: Function,
+  screen: Screen,
   thermModalIdx: number,
   thermInterval: number,
   thermostats: ThermostatState[],

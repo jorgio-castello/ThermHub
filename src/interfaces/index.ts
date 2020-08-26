@@ -1,5 +1,4 @@
 // Import types / interfaces
-import { AppState as AppState_ } from './App';
 import { ControlPanelProps as ControlPanelProps_ } from './ControlPanelProps';
 import { DashboardProps as DashboardProps_ } from './DashboardProps';
 import { DegreesFormat as DegreesFormat_ } from './DegreesFormat';
@@ -21,7 +20,6 @@ import Calendar from './Calendar';
 export { Calendar };
 
 // Export types / interfaces
-export type AppState = AppState_;
 export type ControlPanelProps = ControlPanelProps_;
 export type DashboardProps = DashboardProps_;
 export type DegreesFormat = DegreesFormat_;
@@ -39,5 +37,4 @@ export type ThermPanelProps = ThermPanelProps_;
 export type TimeFormat = TimeFormat_;
 
 // Types / interfaces util functions
-export { init } from './App';
 export { generateHeader } from './Header';

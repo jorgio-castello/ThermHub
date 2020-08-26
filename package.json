@@ -20,7 +20,7 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "bash ./sh/generateSeedData.sh && npm run watch:css && react-scripts start",
+    "start": "npm run watch:css && react-scripts start",
     "build": "npm run build:css && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

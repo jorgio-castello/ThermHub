@@ -1,5 +1,4 @@
 import { Forecast as ForecastState, Header as HeaderState, Therm as ThermostatState } from '../interfaces';
-import SeedData from '../ThermHub_PastData';
 
 export enum Screen {
 	ScreenSaver,

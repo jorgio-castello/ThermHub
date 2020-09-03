@@ -1,4 +1,4 @@
-import { Header } from './';
+import { Header } from './Header';
 
 export type HeaderProps = {
 	headerData: Header,

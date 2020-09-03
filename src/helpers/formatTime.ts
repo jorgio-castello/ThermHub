@@ -1,4 +1,4 @@
-import { Calendar } from "../interfaces";
+import Calendar from "../interfaces/Calendar";
 import { timeZone } from "../config";
 
 function convert24HourTo12Hour(hours: number): number {

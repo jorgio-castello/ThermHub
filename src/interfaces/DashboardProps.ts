@@ -1,4 +1,6 @@
-import { Forecast as ForecastState, Header as HeaderState, Therm as ThermostatState } from '../interfaces';
+import { Forecast as ForecastState } from '../interfaces/Forecast'
+import { Header as HeaderState } from '../interfaces/Header';
+import { Therm as ThermostatState } from '../interfaces/Therm';
 import { Screen } from './App';
 
 export type DashboardProps = {

@@ -1,7 +1,12 @@
 import React from 'react';
 import { AppContainer } from '../assets/cssClasses';
-import { ControlPanel, Header, RaspberrySettings, ThermModal, ThermPanel, WeatherForecast } from './';
-import { DashboardProps } from '../interfaces';
+import ControlPanel from './Settings/ControlPanel';
+import Header from './Header';
+import RaspberrySettings from './Settings/RaspberrySettings';
+import ThermModal from './WeatherGraph/ThermModal';
+import ThermPanel from './WeatherGraph/ThermPanel';
+import WeatherForecast from './WeatherForecast/WeatherForecast'
+import { DashboardProps } from '../interfaces/DashboardProps';
 import { Screen } from '../interfaces/App';
 
 function Dashboard(props: DashboardProps) {

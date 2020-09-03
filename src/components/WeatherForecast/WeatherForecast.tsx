@@ -1,6 +1,6 @@
 import React from 'react';
 import WeatherForecastTile from './WeatherForecastTile';
-import { ForecastProps } from '../../interfaces';
+import { ForecastProps } from '../../interfaces/ForecastProps';
 
 function WeatherForecast(props: ForecastProps) {
 	let data = props.forecastData.sort((a, b) => Number(new Date(a.date)) - Number(new Date(b.date)));

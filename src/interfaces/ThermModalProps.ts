@@ -1,4 +1,4 @@
-import { Therm } from "./";
+import { Therm } from "./Therm";
 
 export type ThermModalProps = {
 	therm: Therm,

@@ -1,8 +1,14 @@
 import React from 'react';
 import CONFIG from '../config';
-import { Dashboard, Screensaver } from './';
-import { DegreesFormat, generateHeader, NowResponse, Therm, TimeFormat } from '../interfaces';
-import { convertBinaryToBase64, getDate, getNow } from '../helpers'
+import Dashboard from './Dashboard';
+import Screensaver from './Screensaver';
+import { DegreesFormat } from '../interfaces/DegreesFormat';
+import { generateHeader } from '../interfaces/Header';
+import { NowResponse } from '../interfaces/NowResponse';
+import { Therm } from '../interfaces/Therm';
+import { TimeFormat } from '../interfaces/TimeFormat';
+import { convertBinaryToBase64 } from '../helpers/convertBinaryToBase64';
+import { getDate, getNow } from '../helpers/trackTime'
 import { closeModal, expandThermPanel, setTemperatureFormat, setTimeFormat, toggleRaspberrySettings, setThermInterval } from '../eventHandlers';
 import { AppState, Screen } from '../interfaces/App';
 import ScreenSaver from './Screensaver';
@@ -24,12 +30,12 @@ class App extends React.Component<{}, AppState> {
 
 	componentDidMount(): void {
 		const startTime = getNow();
-		this.fetchScreenSaver()
-			.then(screenSaverSrc => this.setState({ screenSaverSrc }));
-		this.updateData(startTime)
-			.then(() => {
-				this.startTimeThread();
-			});
+		// this.fetchScreenSaver()
+		// 	.then(screenSaverSrc => this.setState({ screenSaverSrc }));
+		// this.updateData(startTime)
+		// 	.then(() => {
+		// 		this.startTimeThread();
+		// 	});
 	}
 
 	componentWillUnmount(): void {

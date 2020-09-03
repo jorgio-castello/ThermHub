@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThermChildProps } from '../../interfaces';
+import { ThermChildProps } from '../../interfaces/ThermChildProps';
 import { Line } from 'react-chartjs-2';
 import ThermPanelChildHeader from './ThermPanelChildHeader';
 import { generateAxes } from '../../helpers/generateGraphData';

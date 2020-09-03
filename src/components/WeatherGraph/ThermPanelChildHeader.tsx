@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as PlusSvg } from '../../assets/svgs/plus.svg';
-import { Therm } from '../../interfaces';
-import { scrubTemperature } from '../../helpers';
+import { Therm } from '../../interfaces/Therm';
+import scrubTemperature from '../../helpers/temperatureScrubber';
 
 interface ThermChildHeaderProps {
 	thermostat: Therm,

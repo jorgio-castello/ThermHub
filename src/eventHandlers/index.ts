@@ -1,5 +1,6 @@
 import App from '../components/App';
-import { DegreesFormat, TimeFormat } from '../interfaces';
+import { DegreesFormat } from '../interfaces/DegreesFormat';
+import { TimeFormat } from '../interfaces/TimeFormat';
 
 export function toggleRaspberrySettings(this: App): void {
 	this.setState({ showRaspberrySettings: !this.state.showRaspberrySettings });

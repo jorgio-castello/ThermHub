@@ -1,6 +1,7 @@
 import React from 'react';
-import { Calendar, ForecastTileProps } from '../../interfaces';
-import { generateForecastStr } from '../../helpers';
+import Calendar from '../../interfaces/Calendar';
+import { ForecastTileProps } from '../../interfaces/ForecastTileProps'
+import { generateForecastStr } from '../../helpers/generateForecastStr';
 
 function WeatherForecastTile(props: ForecastTileProps) {
 	let date = new Date();

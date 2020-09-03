@@ -1,6 +1,8 @@
 import React from 'react';
-import { Calendar, HeaderProps } from '../interfaces';
-import { formatDateStr, formatTime, scrubTemperature } from '../helpers';
+import Calendar from '../interfaces/Calendar';
+import { HeaderProps } from '../interfaces/HeaderProps';
+import scrubTemperature from '../helpers/temperatureScrubber';
+import { formatDateStr, formatTime } from '../helpers/formatTime'
 import { ReactComponent as MenuSvg } from '../assets/svgs/menu.svg';
 
 function Header({ headerData, date, use24Hour, degreesFormat, toggleRaspberrySettings }: HeaderProps) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import ThermPanelChild from './ThermPanelChild';
-import { ThermModalProps, Therm } from '../../interfaces';
+import { Therm } from '../../interfaces/Therm';
+import { ThermModalProps } from '../../interfaces/ThermModalProps';
 import { activeModalBtn, inactiveModalBtn } from '../../assets/cssClasses';
 
 export default function ThermModal(props: ThermModalProps) {

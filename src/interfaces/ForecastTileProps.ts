@@ -1,4 +1,4 @@
-import { Forecast } from "./";
+import { Forecast } from "./Forecast";
 
 export type ForecastTileProps = {
 	forecast: Forecast,

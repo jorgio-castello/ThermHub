@@ -1,5 +1,6 @@
-import { Therm } from "../interfaces";
-import { formatPastTime, scrubTemperature } from '../helpers';
+import { Therm } from "../interfaces/Therm";
+import { formatPastTime } from '../helpers/formatTime';
+import scrubTemperature from '../helpers/temperatureScrubber';
 
 function calculateMidpoint(left: number, right: number): number {
   return Math.floor((left + right) / 2);

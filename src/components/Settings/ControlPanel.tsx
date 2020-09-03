@@ -1,5 +1,5 @@
 import React from 'react';
-import { ControlPanelProps } from '../../interfaces';
+import { ControlPanelProps } from '../../interfaces/ControlPanelProps';
 import { activeBtnState, inactiveBtnState } from '../../assets/cssClasses';
 
 export default function ({ degreesFormat, use24Hour, setTemperatureFormat, setTimeFormat }: ControlPanelProps) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { scrubTemperature } from '.';
+import scrubTemperature from './temperatureScrubber';
 import { ReactComponent as SunSvg } from '../assets/svgs/sun.svg';
 import { ReactComponent as MoonSvg } from '../assets/svgs/moon.svg';
 

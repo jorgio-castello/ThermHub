@@ -1,6 +1,6 @@
 import React from 'react';
 import { RaspberrySettingsProps } from '../../interfaces/RaspberrySettingsProps';
-import { activeBtnStateSm, inactiveBtnStateSm } from '../../assets/cssClasses';
+import SettingsButton from '../UserInterface/SettingsButton';
 
 export default function ({ settings, setSettings }: RaspberrySettingsProps) {
 	const { degreesFormat, use24Hour, thermInterval } = settings;
@@ -14,26 +14,31 @@ export default function ({ settings, setSettings }: RaspberrySettingsProps) {
 				<div className="flex flex-row items-center justify-between mt-1">
 					<div className="w-1/12 font-light text-blue-500 text-sm mr-2">Temperature:</div>
 					<div className="w-8/12">
-						<button className={degreesFormat === 'Fahrenheit' ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'degreesFormat', 'Fahrenheit')}>{`F\u00b0`}</button>
-						<button className={degreesFormat === 'Celsius' ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'degreesFormat', 'Celsius')}>{`C\u00b0`}</button>
-						<button className={degreesFormat === 'Kelvin' ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'degreesFormat', 'Kelvin')}>{`K\u00b0`}</button>
+						{[`${`F\u00b0`}`, `${`C\u00b0`}`, `${`K\u00b0`}`].map((degrees: string, idx: number) => (
+							<SettingsButton
+								active={degreesFormat[0] === degrees[0]}
+								size=" h-8 w-12 mr-1"
+								onClick={() => setSettings(settings, 'degreesFormat', degrees)}>
+								{degrees}
+							</SettingsButton>
+						))}
 					</div>
 				</div>
 				<div className="flex flex-row mt-1 items-center justify-between flex-wrap">
 					<div className="w-1/12 font-light text-blue-500 text-sm mr-2">Time:</div>
 					<div className="w-8/12 justify-start">
-						<button className={use24Hour ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'use24Hour', true)}>24H</button>
-						<button className={use24Hour ? inactiveBtnStateSm : activeBtnStateSm} onClick={() => setSettings(settings, 'use24Hour', false)}>12H</button>
+						<SettingsButton active={use24Hour} size=" h-8 w-12 mr-1" onClick={() => setSettings(settings, 'use24Hour', true)}>12H</SettingsButton>
+						<SettingsButton active={!use24Hour} size=" h-8 w-12 mr-1" onClick={() => setSettings(settings, 'use24Hour', false)}>24H</SettingsButton>
 					</div>
 				</div>
 				<div className="flex flex-row mt-1 items-center flex-wrap justify-between">
 					<div className="w-1/12 font-light text-blue-500 text-sm mr-2">Interval:</div>
 					<div className="w-auto justify-start">
-						<button className={thermInterval === 289 ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'thermInterval', 289)}>24H</button>
-						<button className={thermInterval === 145 ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'thermInterval', 145)}>12H</button>
-						<button className={thermInterval === 73 ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'thermInterval', 73)}>6H</button>
-						<button className={thermInterval === 13 ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'thermInterval', 13)}>1H</button>
-						<button className={thermInterval === 7 ? activeBtnStateSm : inactiveBtnStateSm} onClick={() => setSettings(settings, 'thermInterval', 7)}>30M</button>
+						<SettingsButton active={thermInterval === 289} size=" h-8 w-12 mr-1" onClick={() => setSettings(settings, 'thermInterval', 289)}>24H</SettingsButton>
+						<SettingsButton active={thermInterval === 145} size=" h-8 w-12 mr-1" onClick={() => setSettings(settings, 'thermInterval', 145)}>12H</SettingsButton>
+						<SettingsButton active={thermInterval === 73} size=" h-8 w-12 mr-1" onClick={() => setSettings(settings, 'thermInterval', 73)}>6H</SettingsButton>
+						<SettingsButton active={thermInterval === 13} size=" h-8 w-12 mr-1" onClick={() => setSettings(settings, 'thermInterval', 13)}>1H</SettingsButton>
+						<SettingsButton active={thermInterval === 7} size=" h-8 w-12 mr-1" onClick={() => setSettings(settings, 'thermInterval', 7)}>30M</SettingsButton>
 					</div>
 				</div>
 			</div>

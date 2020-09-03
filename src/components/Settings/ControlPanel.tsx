@@ -1,6 +1,6 @@
 import React from 'react';
 import { ControlPanelProps } from '../../interfaces/ControlPanelProps';
-import { activeBtnState, inactiveBtnState } from '../../assets/cssClasses';
+import SettingsButton from '../UserInterface/SettingsButton';
 
 export default function ({ settings, setSettings }: ControlPanelProps) {
 	const { degreesFormat, use24Hour } = settings;
@@ -13,14 +13,19 @@ export default function ({ settings, setSettings }: ControlPanelProps) {
 				<input className="h-10 rounded-lg border border-solid border-gray-300 w-3/4 ml-2 pl-2 font-thin shadow-lg" type="text" placeholder="Enter a city" />
 				<div className="ml-2 mt-5 mb-2 font-light text-blue-500">Temperature format:</div>
 				<div className="flex flex-row ml-2 flex-wrap">
-					<button className={degreesFormat === 'Fahrenheit' ? activeBtnState : inactiveBtnState} onClick={() => setSettings(settings, 'degreesFormat', 'Fahrenheit')}>Fahrenheit</button>
-					<button className={degreesFormat === 'Celsius' ? activeBtnState : inactiveBtnState} onClick={() => setSettings(settings, 'degreesFormat', 'Celsius')}>Celsius</button>
-					<button className={degreesFormat === 'Kelvin' ? activeBtnState : inactiveBtnState} onClick={() => setSettings(settings, 'degreesFormat', 'Kelvin')}>Kelvin</button>
+					{['Fahrenheit', 'Celsius', 'Kelvin'].map((degrees: string, idx: number) => (
+						<SettingsButton
+							active={degreesFormat === degrees}
+							size="lg- px-5 py-2 m-1"
+							onClick={() => setSettings(settings, 'degreesFormat', degrees)}>
+							{degrees}
+						</SettingsButton>
+					))}
 				</div>
 				<div className="ml-2 mt-5 mb-2 font-light text-blue-500">Time format:</div>
 				<div className="flex flex-row ml-2">
-					<button className={use24Hour ? inactiveBtnState : activeBtnState} onClick={() => setSettings(settings, 'use24Hour', false)}>12H</button>
-					<button className={use24Hour ? activeBtnState : inactiveBtnState} onClick={() => setSettings(settings, 'use24Hour', true)}>24H</button>
+					<SettingsButton active={use24Hour} size="lg- px-5 py-2 m-1" onClick={() => setSettings(settings, 'use24Hour', true)}>12H</SettingsButton>
+					<SettingsButton active={!use24Hour} size="lg- px-5 py-2 m-1" onClick={() => setSettings(settings, 'use24Hour', false)}>24H</SettingsButton>
 				</div>
 			</div>
 		</div>

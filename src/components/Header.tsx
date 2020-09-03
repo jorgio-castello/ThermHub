@@ -5,7 +5,9 @@ import scrubTemperature from '../helpers/temperatureScrubber';
 import { formatDateStr, formatTime } from '../helpers/formatTime'
 import { ReactComponent as MenuSvg } from '../assets/svgs/menu.svg';
 
-function Header({ headerData, date, use24Hour, degreesFormat, toggleRaspberrySettings }: HeaderProps) {
+function Header({ headerData, date, settings, toggleRaspberrySettings }: HeaderProps) {
+	const { degreesFormat, use24Hour } = settings;
+
 	const dayOfWeek = Calendar.daysOfWeek[date.getDay() - 1];
 	const dateStr = formatDateStr(date);
 	const temperature = scrubTemperature(headerData.temperature, degreesFormat);

@@ -1,6 +1,7 @@
 import { Forecast as ForecastState } from '../interfaces/Forecast'
 import { Header as HeaderState } from '../interfaces/Header';
 import { Therm as ThermostatState } from '../interfaces/Therm';
+import Settings from './Settings';
 
 export enum Screen {
 	ScreenSaver,
@@ -24,6 +25,7 @@ export class AppState {
 		public thermInterval: number,
 		public screenSaverSrc: string[],
 		public screen: Screen,
+		public settings: Settings
 	) { }
 
 	static default(): AppState {
@@ -42,6 +44,7 @@ export class AppState {
 			289,
 			[],
 			Screen.Dashboard,
+			new Settings()
 		);
 	}
 }

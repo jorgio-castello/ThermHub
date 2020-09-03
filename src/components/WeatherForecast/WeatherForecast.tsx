@@ -10,7 +10,7 @@ function WeatherForecast(props: ForecastProps) {
 				<div className="w-2/12 font-thin text-white bg-indigo-700 text-lg justify-center mb-2 p-2 rounded-lg bg-opacity-75 shadow-lg text-center">Weather Forecast</div>
 			</div>
 			<div className="flex flex-row lg:p-5 rounded-lg lg:shadow-lg items-center justify-between lg:bg-blue-100 lg:bg-opacity-75 lg:border lg:border-solid lg:border-indigo-200">
-				{data.map((forecast, index) => <WeatherForecastTile forecast={forecast} key={index} degreesFormat={props.degreesFormat} />)}
+				{data.map((forecast, index) => <WeatherForecastTile forecast={forecast} key={index} degreesFormat={props.settings.degreesFormat} />)}
 			</div>
 		</>
 	);

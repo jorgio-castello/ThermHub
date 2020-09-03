@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CONFIG from '../config';
 import Dashboard from './Dashboard';
 import Screensaver from './Screensaver';
-import { DegreesFormat } from '../interfaces/DegreesFormat';
 import { generateHeader } from '../interfaces/Header';
 import { NowResponse } from '../interfaces/NowResponse';
 import { Therm } from '../interfaces/Therm';
-import { TimeFormat } from '../interfaces/TimeFormat';
 import { convertBinaryToBase64 } from '../helpers/convertBinaryToBase64';
 import { getDate, getNow } from '../helpers/trackTime'
-import { closeModal, expandThermPanel, setTemperatureFormat, setTimeFormat, toggleRaspberrySettings, setThermInterval } from '../eventHandlers';
+import { closeModal, expandThermPanel, setSettings, toggleRaspberrySettings, } from '../eventHandlers';
 import { AppState, Screen } from '../interfaces/App';
 import ScreenSaver from './Screensaver';
+import Settings from '../interfaces/Settings';
 
 class App extends React.Component<{}, AppState> {
 	private timeThread = 0;
@@ -22,14 +21,16 @@ class App extends React.Component<{}, AppState> {
 
 		this.closeModal = closeModal.bind(this);
 		this.expandThermPanel = expandThermPanel.bind(this);
-		this.setTemperatureFormat = setTemperatureFormat.bind(this);
-		this.setTimeFormat = setTimeFormat.bind(this);
-		this.setThermInterval = setThermInterval.bind(this);
+		this.setSettings = setSettings.bind(this);
 		this.toggleRaspberrySettings = toggleRaspberrySettings.bind(this);
 	}
 
 	componentDidMount(): void {
 		const startTime = getNow();
+		const settings = new Settings();
+		settings.init();
+		this.setState({ settings });
+
 		// this.fetchScreenSaver()
 		// 	.then(screenSaverSrc => this.setState({ screenSaverSrc }));
 		// this.updateData(startTime)
@@ -47,10 +48,8 @@ class App extends React.Component<{}, AppState> {
 
 	closeModal(): void { };
 	expandThermPanel(e: Event): void { };
+	setSettings(settings: Settings, key: string, value: string | boolean | number): void { };
 	toggleRaspberrySettings(): void { };
-	setTimeFormat(use24Hour: TimeFormat): void { };
-	setTemperatureFormat(degreesFormat: DegreesFormat): void { };
-	setThermInterval(thermInterval: number): void { };
 
 	private startTimeThread(): void {
 		this.timeThread = window.setInterval(() => {
@@ -100,7 +99,7 @@ class App extends React.Component<{}, AppState> {
 	}
 
 	render() {
-		const { header, date, forecastDaily, use24Hour, degreesFormat, past, screenSaverSrc, screen, showThermModal, showRaspberrySettings, thermModalIdx, thermInterval, thermostats } = this.state;
+		const { header, date, forecastDaily, past, screenSaverSrc, screen, settings, showThermModal, showRaspberrySettings, thermModalIdx, thermostats } = this.state;
 		return (
 			<>
 				<ScreenSaver date={date} screenSaverSrc={screenSaverSrc} screen={screen} tap={() => this.setState({ screen: Screen.Dashboard })} />
@@ -108,15 +107,11 @@ class App extends React.Component<{}, AppState> {
 					header={header}
 					date={date}
 					forecast_daily={forecastDaily}
-					use24Hour={use24Hour}
-					degreesFormat={degreesFormat}
 					past={past}
 					showThermModal={showThermModal}
 					showRaspberrySettings={showRaspberrySettings}
-					thermInterval={thermInterval}
-					setTemperatureFormat={this.setTemperatureFormat}
-					setThermInterval={this.setThermInterval}
-					setTimeFormat={this.setTimeFormat}
+					settings={settings}
+					setSettings={this.setSettings}
 					screen={screen}
 					thermModalIdx={thermModalIdx}
 					toggleRaspberrySettings={this.toggleRaspberrySettings}

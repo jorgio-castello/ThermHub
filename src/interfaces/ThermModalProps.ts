@@ -1,12 +1,11 @@
 import { Therm } from "./Therm";
+import Settings from "./Settings";
 
 export type ThermModalProps = {
 	therm: Therm,
 	updateModalDisplay: Function,
-	degreesFormat: string,
-	use24Hour: boolean,
 	showThermModal: boolean,
 	past: Therm[],
-	thermInterval: number,
-	setThermInterval: Function,
+	settings: Settings,
+	setSettings: Function,
 }

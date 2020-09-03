@@ -13,22 +13,22 @@ function Dashboard(props: DashboardProps) {
   if (props.screen !== Screen.Dashboard) {
     return null;
   }
-  const { header, date, forecast_daily, use24Hour, degreesFormat, past, showThermModal, showRaspberrySettings, thermInterval, thermModalIdx, thermostats } = props;
+  const { header, date, forecast_daily, past, settings, showThermModal, showRaspberrySettings, thermModalIdx, thermostats } = props;
   return (
     <>
       <div className={AppContainer}>
-        <ControlPanel use24Hour={use24Hour} degreesFormat={degreesFormat} setTemperatureFormat={props.setTemperatureFormat} setTimeFormat={props.setTimeFormat} />
+        <ControlPanel settings={settings} setSettings={props.setSettings} />
         <div className="inline-flex flex-col justify-center lg:w-3/4 w-11/12">
-          <Header headerData={header} date={date} use24Hour={use24Hour} degreesFormat={degreesFormat} toggleRaspberrySettings={props.toggleRaspberrySettings} />
+          <Header headerData={header} date={date} settings={settings} toggleRaspberrySettings={props.toggleRaspberrySettings} />
           {showRaspberrySettings ? (
-            <RaspberrySettings degreesFormat={degreesFormat} use24Hour={use24Hour} setTemperatureFormat={props.setTemperatureFormat} setTimeFormat={props.setTimeFormat} setThermInterval={props.setThermInterval} thermInterval={thermInterval} />
+            <RaspberrySettings settings={settings} setSettings={props.setSettings} />
           ) : null}
-          <ThermPanel thermostatData={thermostats} expandThermPanel={props.expandThermPanel} degreesFormat={degreesFormat} use24Hour={use24Hour} pastData={past} showThermModal={showThermModal} thermInterval={thermInterval} />
-          <WeatherForecast forecastData={forecast_daily} degreesFormat={degreesFormat} />
+          <ThermPanel thermostatData={thermostats} expandThermPanel={props.expandThermPanel} settings={settings} pastData={past} showThermModal={showThermModal} />
+          <WeatherForecast forecastData={forecast_daily} settings={settings} />
         </div>
       </div>
       {showThermModal ? (
-        <ThermModal therm={thermostats[thermModalIdx]} updateModalDisplay={props.updateModalDisplay} degreesFormat={degreesFormat} use24Hour={use24Hour} showThermModal={showThermModal} past={past} setThermInterval={props.setThermInterval} thermInterval={thermInterval} />
+        <ThermModal therm={thermostats[thermModalIdx]} updateModalDisplay={props.updateModalDisplay} settings={settings} setSettings={props.setSettings} showThermModal={showThermModal} past={past} />
       ) : null}
     </>
   );

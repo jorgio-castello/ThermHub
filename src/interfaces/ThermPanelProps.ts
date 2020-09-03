@@ -1,11 +1,10 @@
 import { Therm } from "./Therm";
+import Settings from "./Settings";
 
 export type ThermPanelProps = {
 	thermostatData: Therm[],
 	expandThermPanel: Function,
-	degreesFormat: string,
-	use24Hour: boolean,
 	pastData: Therm[],
+	settings: Settings,
 	showThermModal: boolean,
-	thermInterval: number,
 }

@@ -1,17 +1,14 @@
 import App from '../components/App';
-import { DegreesFormat } from '../interfaces/DegreesFormat';
-import { TimeFormat } from '../interfaces/TimeFormat';
+import Settings from '../interfaces/Settings';
 
 export function toggleRaspberrySettings(this: App): void {
 	this.setState({ showRaspberrySettings: !this.state.showRaspberrySettings });
 }
 
-export function setTimeFormat(this: App, use24Hour: TimeFormat): void {
-	this.setState(use24Hour);
-}
-
-export function setTemperatureFormat(this: App, degreesFormat: DegreesFormat): void {
-	this.setState(degreesFormat);
+export function setSettings(this: App, settings: Settings, key: string, value: string | number | boolean): void {
+	settings[key] = value;
+	settings.update(settings);
+	this.setState({ settings });
 }
 
 export function closeModal(this: App): void {
@@ -23,8 +20,4 @@ export function expandThermPanel(this: App, e: Event): void {
 	const index = Number(target.getAttribute('id'));
 
 	this.setState({ showThermModal: true, thermModalIdx: index })
-}
-
-export function setThermInterval(this: App, thermInterval: number): void {
-	this.setState({ thermInterval })
 }

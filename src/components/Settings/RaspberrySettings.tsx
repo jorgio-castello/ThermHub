@@ -18,7 +18,7 @@ export default function ({ settings, setSettings }: RaspberrySettingsProps) {
 							<SettingsButton
 								active={degreesFormat[0] === degrees[0]}
 								size=" h-8 w-12 mr-1"
-								onClick={() => setSettings(settings, 'degreesFormat', degrees)}>
+								onClick={() => setSettings(settings, 'degreesFormat', degrees[0])}>
 								{degrees}
 							</SettingsButton>
 						))}

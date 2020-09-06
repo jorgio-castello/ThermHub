@@ -7,6 +7,10 @@ export default function (temp: number, degreesFormat: string): number {
 		temp *= 10;
 	}
 
+	if (degreesFormat === 'C') degreesFormat = 'Celsius';
+	if (degreesFormat === 'F') degreesFormat = 'Fahrenheit';
+	if (degreesFormat === 'K') degreesFormat = 'Kelvin';
+
 	switch (degreesFormat) {
 		case 'Celsius':
 			temp = Math.round(((5 / 9) * (temp - 32))) / 10;
